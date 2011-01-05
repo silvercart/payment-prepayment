@@ -20,6 +20,7 @@ class PaymentPrepayment extends PaymentMethod {
      * @since 05.01.2011
      */
     public static $db = array(
+        'TextBankAccountInfo' => 'Text'
     );
 
     /**
@@ -32,6 +33,7 @@ class PaymentPrepayment extends PaymentMethod {
      * @since 05.01.2011
      */
     public static $field_labels = array(
+        'TextBankAccountInfo' => 'Bankverbindung'
     );
 
     /**
@@ -70,6 +72,17 @@ class PaymentPrepayment extends PaymentMethod {
     public function getCMSFields_forPopup($params = null) {
         $fields         = parent::getCMSFields_forPopup($params);
         $fieldLabels    = self::$field_labels;
+        
+        $tabTextTemplates = new Tab('Textvorlagen');
+        
+        $fields->fieldByName('Sections')->push($tabTextTemplates);
+        
+        // Textvorlagen Tab Felder --------------------------------------------
+        $tabTextTemplates->setChildren(
+            new FieldSet(
+                new TextareaField('TextBankAccountInfo', $fieldLabels['TextBankAccountInfo'], 10, 10)
+            )
+        );
 
         return $fields;
     }
@@ -132,7 +145,37 @@ class PaymentPrepayment extends PaymentMethod {
         parent::processReturnJumpFromPaymentProvider();
     }
 
-    // -----------------------------------------------------------------------
+    // ------------------------------------------------------------------------
     // Methoden, die nur fuer das Vorkasse-Modul von Belang sind.
-    // -----------------------------------------------------------------------
+    // ------------------------------------------------------------------------
+    
+    /**
+     * Legt benoetigte Datensaetze an.
+     * 
+     * @return void
+     *
+     * @author Sascha Koehler <skoehler@pixeltricks.de>
+     * @copyright 2011 pixeltricks GmbH
+     * @since 05.01.2011
+     */
+    public function requireDefaultRecords() {
+        parent::requireDefaultRecords();
+        
+        $checkInfoMail = DataObject::get_one(
+            'ShopEmail',
+            sprintf(
+                "\"Identifier\" = '%s'",
+                'PaymentPrepaymentBankAccountInfo'
+            )
+        );
+        
+        if (!$checkInfoMail) {
+            $infoMail = new ShopEmail();
+            $infoMail->setField('Identifier',   'PaymentPrepaymentBankAccountInfo');
+            $infoMail->setField('Subject',      'Zahlungsinformationen zu Ihrer Bestellung');
+            $infoMail->setField('EmailText',    '');
+            $infoMail->setField('Variables',    "\$orderInfo\$\n\$orderTotal\$");
+            $infoMail->write();
+        }
+    }
 }
