@@ -105,6 +105,19 @@ class PaymentPrepayment extends PaymentMethod {
      * @since 05.01.2011
      */
     public function processPaymentAfterOrder($orderObj) {
+        $member = Member::currentMember();
+        
+        if ($member) {
+            // Eine Email mit Zahlungsanweisungen an den Kunde schicken
+            ShopEmail::send(
+                'PaymentPrepaymentBankAccountInfo',
+                //$member->Email,
+                'skoehler@pixeltricks.de',
+                array(
+                    'order' => $orderObj,
+                )
+            );
+        }
         parent::processPaymentAfterOrder($orderObj);
     }
 
@@ -143,6 +156,34 @@ class PaymentPrepayment extends PaymentMethod {
      */
     public function processReturnJumpFromPaymentProvider() {
         parent::processReturnJumpFromPaymentProvider();
+    }
+    
+    /**
+     * Bietet die Moeglichkeit, nach dem Ende der Bestellung noch einen Text
+     * auszugeben.
+     * Diese Methode wird nach dem Ende der Bestellung aufgerufen.
+     *
+     * @param Order $orderObj Das Order-Objekt, mit dessen Daten die Abwicklung
+     * erfolgen soll.
+     * 
+     * @return void
+     *
+     * @author Sascha Koehler <skoehler@pixeltricks.de>
+     * @copyright 2011 pixeltricks GmbH
+     * @since 06.01.2011
+     */
+    public function processPaymentConfirmationText($orderObj) {
+        parent::processPaymentConfirmationText($orderObj);
+        
+        $variables = array(
+            'order' => $orderObj
+        );
+        
+        $templateVariables  = new ArrayData($variables);
+        $textTemplate       = new SSViewer_FromString($this->TextBankAccountInfo);
+        $text               = HTTP::absoluteURLs($textTemplate->process($templateVariables));
+        
+        return $text;
     }
 
     // ------------------------------------------------------------------------
