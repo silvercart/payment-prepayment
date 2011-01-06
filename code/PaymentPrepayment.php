@@ -111,8 +111,7 @@ class PaymentPrepayment extends PaymentMethod {
             // Eine Email mit Zahlungsanweisungen an den Kunde schicken
             ShopEmail::send(
                 'PaymentPrepaymentBankAccountInfo',
-                //$member->Email,
-                'skoehler@pixeltricks.de',
+                $member->Email,
                 array(
                     'order' => $orderObj,
                 )
