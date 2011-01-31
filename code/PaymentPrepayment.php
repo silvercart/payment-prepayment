@@ -69,7 +69,7 @@ class PaymentPrepayment extends PaymentMethod {
      * @copyright 2011 pixeltricks GmbH
      * @since 05.01.2011
      */
-    public function getCMSFields_forPopup($params = null) {
+    public function getCMSFields($params = null) {
         $fields         = parent::getCMSFields_forPopup($params);
         $fieldLabels    = self::$field_labels;
         
