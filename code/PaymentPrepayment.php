@@ -113,7 +113,7 @@ class PaymentPrepayment extends PaymentMethod {
                 'PaymentPrepaymentBankAccountInfo',
                 $member->Email,
                 array(
-                    'order' => $orderObj,
+                    'Order' => $orderObj,
                 )
             );
         }
