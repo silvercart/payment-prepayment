@@ -8,7 +8,7 @@
  * @since 05.01.2011
  * @license none
  */
-class PaymentPrepayment extends PaymentMethod {
+class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
 
     /**
      * Definition der Datenbankfelder.
@@ -44,7 +44,7 @@ class PaymentPrepayment extends PaymentMethod {
      * @since 05.01.2011
      */
     public static $has_one = array(
-        'HandlingCost' => 'HandlingCostPrepayment'
+        'SilvercartHandlingCost' => 'SilvercartHandlingCostPrepayment'
     );
 
     /**
@@ -110,7 +110,7 @@ class PaymentPrepayment extends PaymentMethod {
         if ($member) {
             // Eine Email mit Zahlungsanweisungen an den Kunde schicken
             ShopEmail::send(
-                'PaymentPrepaymentBankAccountInfo',
+                'SilvercartPaymentPrepaymentBankAccountInfo',
                 $member->Email,
                 array(
                     'Order' => $orderObj,
@@ -202,16 +202,16 @@ class PaymentPrepayment extends PaymentMethod {
         parent::requireDefaultRecords();
         
         $checkInfoMail = DataObject::get_one(
-            'ShopEmail',
+            'SilvercartShopEmail',
             sprintf(
                 "\"Identifier\" = '%s'",
-                'PaymentPrepaymentBankAccountInfo'
+                'SilvercartPaymentPrepaymentBankAccountInfo'
             )
         );
         
         if (!$checkInfoMail) {
             $infoMail = new ShopEmail();
-            $infoMail->setField('Identifier',   'PaymentPrepaymentBankAccountInfo');
+            $infoMail->setField('Identifier',   'SilvercartPaymentPrepaymentBankAccountInfo');
             $infoMail->setField('Subject',      'Zahlungsinformationen zu Ihrer Bestellung');
             $infoMail->setField('EmailText',    '');
             $infoMail->setField('Variables',    "\$orderInfo\$\n\$orderTotal\$");
