@@ -109,7 +109,7 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
         
         if ($member) {
             // Eine Email mit Zahlungsanweisungen an den Kunde schicken
-            ShopEmail::send(
+            SilvercartShopEmail::send(
                 'SilvercartPaymentPrepaymentBankAccountInfo',
                 $member->Email,
                 array(
@@ -210,7 +210,7 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
         );
         
         if (!$checkInfoMail) {
-            $infoMail = new ShopEmail();
+            $infoMail = new SilvercartShopEmail();
             $infoMail->setField('Identifier',   'SilvercartPaymentPrepaymentBankAccountInfo');
             $infoMail->setField('Subject',      'Zahlungsinformationen zu Ihrer Bestellung');
             $infoMail->setField('EmailText',    '');
