@@ -95,7 +95,7 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      * Bietet die Moeglichkeit, Code nach dem Anlegen der Bestellung
      * auszufuehren.
      *
-     * @param Order $orderObj Das Order-Objekt, mit dessen Daten die Abwicklung
+     * @param SilvercartOrder $orderObj Das Order-Objekt, mit dessen Daten die Abwicklung
      * erfolgen soll.
      *
      * @return void
@@ -105,18 +105,14 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      * @since 05.01.2011
      */
     public function processPaymentAfterOrder($orderObj) {
-        $member = Member::currentMember();
-        
-        if ($member) {
-            // Eine Email mit Zahlungsanweisungen an den Kunde schicken
-            SilvercartShopEmail::send(
-                'SilvercartPaymentPrepaymentBankAccountInfo',
-                $member->Email,
-                array(
-                    'Order' => $orderObj,
-                )
-            );
-        }
+        // Eine Email mit Zahlungsanweisungen an den Kunde schicken
+        SilvercartShopEmail::send(
+            'SilvercartPaymentPrepaymentBankAccountInfo',
+            $orderObj->CustomersEmail,
+            array(
+                'Order' => $orderObj,
+            )
+        );
         parent::processPaymentAfterOrder($orderObj);
     }
 
