@@ -1,17 +1,36 @@
 <?php
+/*
+ * Copyright 2010, 2011 pixeltricks GmbH
+ *
+ * This file is part of SilvercartPrepaymentPayment.
+ *
+ * SilvercartPaypalPayment is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * SilvercartPrepaymentPayment is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with SilvercartPrepaymentPayment.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 /**
- * Vorkasse Zahlungsmodul
+ * prepayment module
  *
  * @package fashionbids
  * @author Sascha Koehler <skoehler@pixeltricks.de>
  * @copyright 2011 pixeltricks GmbH
  * @since 05.01.2011
- * @license none
+ * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  */
 class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
 
     /**
-     * Definition der Datenbankfelder.
+     * classes attributes
      *
      * @var array
      *
@@ -24,7 +43,7 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
     );
 
     /**
-     * Definition der Labels fuer die Datenbankfelder.
+     * label definition for attributes
      *
      * @var array
      *
@@ -37,7 +56,7 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
     );
 
     /**
-     * Definiert die 1:1 Beziehungen der Klasse.
+     * define 1:1 relations
      *
      * @author Sascha Koehler <skoehler@pixeltricks.de>
      * @copyright 2011 pixeltricks GmbH
@@ -48,7 +67,7 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
     );
 
     /**
-     * Enthaelt den Modulname zur Anzeige in der Adminoberflaeche.
+     * module name to be shown in backend interface
      *
      * @var string
      *
@@ -59,9 +78,9 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
     protected $moduleName = 'Vorkasse';
 
     /**
-     * Liefert die Eingabefelder zum Bearbeiten des Datensatzes.
+     * input fields for editing
      *
-     * @param mixed $params Optionale Parameter
+     * @param mixed $params optional
      *
      * @return FieldSet
      *
@@ -76,7 +95,8 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
         $tabTextTemplates = new Tab('Textvorlagen');
         
         $fields->fieldByName('Sections')->push($tabTextTemplates);
-        
+
+        // text templates for tab fields
         // Textvorlagen Tab Felder --------------------------------------------
         $tabTextTemplates->setChildren(
             new FieldSet(
@@ -88,15 +108,16 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
     }
 
     // ------------------------------------------------------------------------
-    // Verarbeitungsmethoden
+    // methods
     // ------------------------------------------------------------------------
     
     /**
+     * Hook
+     *
      * Bietet die Moeglichkeit, Code nach dem Anlegen der Bestellung
      * auszufuehren.
      *
-     * @param SilvercartOrder $orderObj Das Order-Objekt, mit dessen Daten die Abwicklung
-     * erfolgen soll.
+     * @param SilvercartOrder $orderObj the order object
      *
      * @return void
      *
@@ -105,6 +126,8 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      * @since 05.01.2011
      */
     public function processPaymentAfterOrder($orderObj) {
+
+        // send email with payment information to the customer
         // Eine Email mit Zahlungsanweisungen an den Kunde schicken
         SilvercartShopEmail::send(
             'SilvercartPaymentPrepaymentBankAccountInfo',
@@ -117,11 +140,10 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
     }
 
     /**
+     * hook
+     *
      * Bietet die Moeglichkeit, Code vor dem Anlegen der Bestellung
      * auszufuehren.
-     *
-     * Holt sich das Paypal-Token und speichert es in der Session.
-     * Anschliessend wird zum Checkout auf Paypal weitergeleitet.
      *
      * @return void
      *
@@ -134,14 +156,9 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
     }
     
     /**
-     * Bietet die Moeglichkeit, Code nach dem Ruecksprung vom Payment
-     * Provider auszufuehren.
-     * Diese Methode wird vor dem Anlegen der Bestellung durchgefuehrt.
+     * hook
      *
-     * Von Paypal wird in diesem Schritt die PayerId gesendet, die wir hier
-     * in der Session speichern.
-     * Anschliessend wird zum naechsten Schritt der Checkoutreihe
-     * weitergeleitet.
+     * processed before order creation
      *
      * @return void
      *
@@ -154,12 +171,9 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
     }
     
     /**
-     * Bietet die Moeglichkeit, nach dem Ende der Bestellung noch einen Text
-     * auszugeben.
-     * Diese Methode wird nach dem Ende der Bestellung aufgerufen.
+     * display a text message after order creation
      *
-     * @param Order $orderObj Das Order-Objekt, mit dessen Daten die Abwicklung
-     * erfolgen soll.
+     * @param Order $orderObj the order object
      * 
      * @return void
      *
@@ -182,11 +196,11 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
     }
 
     // ------------------------------------------------------------------------
-    // Methoden, die nur fuer das Vorkasse-Modul von Belang sind.
+    // methods specific to the prepayment module
     // ------------------------------------------------------------------------
     
     /**
-     * Legt benoetigte Datensaetze an.
+     * creates default objects
      * 
      * @return void
      *
