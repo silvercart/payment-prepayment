@@ -78,6 +78,39 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
     protected $moduleName = 'Vorkasse';
 
     /**
+     * Constructor. We localize the static variables here.
+     *
+     * @param array|null $record      This will be null for a new database record.
+     *                                  Alternatively, you can pass an array of
+     *                                  field values.  Normally this contructor is only used by the internal systems that get objects from the database.
+     * @param boolean    $isSingleton This this to true if this is a singleton() object, a stub for calling methods.  Singletons
+     *                                  don't have their defaults set.
+     *
+     * @author Roland Lehmann <rlehmann@pixeltricks.de>
+     * @copyright 2011 pixeltricks GmbH
+     * @since 20.02.2011
+     */
+    public function  __construct($record = null, $isSingleton = false) {
+        parent::__construct($record, $isSingleton);
+        self::$moduleName = _t('SilvercartPaymentPrepayment.NAME');
+    }
+
+    /**
+     * i18n for labels
+     *
+     * @param boolean $includerelations a boolean value to indicate if the labels returned include relation fields
+     *
+     * @author Roland Lehmann <rlehmann@pixeltricks.de>
+     * @since 28.2.2011
+     * @return void
+     */
+    public function fieldLabels($includerelations = true) {
+        $fieldLabels = parent::fieldLabels($includerelations);
+        $fieldLabels['TextBankAccountInfo'] = _t('SilvercartPaymentPrepayment.BANK_ACCOUNT_INFO', 'bank account information', $priority, 'Bankverbindung');
+        return $fieldLabels;
+    }
+
+    /**
      * input fields for editing
      *
      * @param mixed $params optional
@@ -92,7 +125,7 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
         $fields         = parent::getCMSFields_forPopup($params);
         $fieldLabels    = self::$field_labels;
         
-        $tabTextTemplates = new Tab('Textvorlagen');
+        $tabTextTemplates = new Tab(_t('SilvercartPaymentPrepayment.TEXT_TEMPLATES', 'text templates', null, 'Textvorlagen'));
         
         $fields->fieldByName('Sections')->push($tabTextTemplates);
 
@@ -222,7 +255,7 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
         if (!$checkInfoMail) {
             $infoMail = new SilvercartShopEmail();
             $infoMail->setField('Identifier',   'SilvercartPaymentPrepaymentBankAccountInfo');
-            $infoMail->setField('Subject',      'Zahlungsinformationen zu Ihrer Bestellung');
+            $infoMail->setField('Subject', _t('SilvercartPaymentPrepayment.PAYMENT_INFO', 'payment information regarding your order', null, 'Zahlungsinformationen zu Ihrer Bestellung'));
             $infoMail->setField('EmailText',    '');
             $infoMail->setField('Variables',    "\$orderInfo\$\n\$orderTotal\$");
             $infoMail->write();
