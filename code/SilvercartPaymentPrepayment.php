@@ -92,7 +92,6 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      */
     public function  __construct($record = null, $isSingleton = false) {
         parent::__construct($record, $isSingleton);
-        self::$moduleName = _t('SilvercartPaymentPrepayment.NAME');
     }
 
     /**
