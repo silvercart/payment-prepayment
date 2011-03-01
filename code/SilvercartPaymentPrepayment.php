@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Copyright 2010, 2011 pixeltricks GmbH
  *
  * This file is part of SilvercartPrepaymentPayment.
@@ -16,12 +16,16 @@
  *
  * You should have received a copy of the GNU Lesser General Public License
  * along with SilvercartPrepaymentPayment.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package Silvercart
+ * @subpackage Payment
  */
 
 /**
  * prepayment module
  *
- * @package fashionbids
+ * @package Silvercart
+ * @subpackage Payment
  * @author Sascha Koehler <skoehler@pixeltricks.de>
  * @copyright 2011 pixeltricks GmbH
  * @since 05.01.2011
