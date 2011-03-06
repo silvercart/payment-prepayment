@@ -105,11 +105,11 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      *
      * @author Roland Lehmann <rlehmann@pixeltricks.de>
      * @since 28.2.2011
-     * @return void
+     * @return array
      */
     public function fieldLabels($includerelations = true) {
         $fieldLabels = parent::fieldLabels($includerelations);
-        $fieldLabels['TextBankAccountInfo'] = _t('SilvercartPaymentPrepayment.BANK_ACCOUNT_INFO', 'bank account information', $priority, 'Bankverbindung');
+        $fieldLabels['TextBankAccountInfo'] = _t('SilvercartPaymentPrepayment.BANK_ACCOUNT_INFO', 'bank account information');
         return $fieldLabels;
     }
 
@@ -126,7 +126,7 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      */
     public function getCMSFields($params = null) {
         $fields         = parent::getCMSFields_forPopup($params);
-        $fieldLabels    = self::$field_labels;
+        $fieldLabels    = self::fieldLabels();
         
         $tabTextTemplates = new Tab(_t('SilvercartPaymentPrepayment.TEXT_TEMPLATES', 'text templates', null, 'Textvorlagen'));
         
