@@ -33,9 +33,18 @@
  */
 class SilvercartPaymentPrepaymentCheckoutFormStep1 extends SilvercartCheckoutFormStepPaymentInit {
 
+    /**
+     * Process the current step
+     *
+     * @return void
+     *
+     * @author Sascha Koehler <skoehler@pixeltricks.de>
+     * @copyright 2011 pixeltricks GmbH
+     * @since 06.04.2011
+     */
     public function process() {
         if (!parent::process()) {
-            return $this->renderError();
+            return $this->renderWith('SilvercartCheckoutFormStepPaymentError');
         }
 
         $this->controller->addCompletedStep();

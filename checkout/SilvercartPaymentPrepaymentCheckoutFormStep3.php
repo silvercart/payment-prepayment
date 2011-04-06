@@ -31,10 +31,10 @@
  * @since 03.01.2011
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  */
-class SilvercartPaymentPrepaymentCheckoutFormStep2 extends SilvercartCheckoutFormStepProcessOrder {
+class SilvercartPaymentPrepaymentCheckoutFormStep3 extends SilvercartCheckoutFormStepDefaultOrderConfirmation {
 
     /**
-     * Process the current step
+     * Render this step with the default template
      *
      * @return void
      *
@@ -42,13 +42,10 @@ class SilvercartPaymentPrepaymentCheckoutFormStep2 extends SilvercartCheckoutFor
      * @copyright 2011 pixeltricks GmbH
      * @since 06.04.2011
      */
-    public function process() {
-        if (!parent::process()) {
-            return $this->renderWith('SilvercartCheckoutFormStepPaymentError');
-        }
-
-        $this->controller->addCompletedStep();
-        $this->controller->NextStep();
+    public function init() {
+        $output = $this->renderWith('SilvercartCheckoutFormStepDefaultOrderConfirmation');
+        
+        return $output;
     }
 }
 
