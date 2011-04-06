@@ -146,7 +146,24 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
     // ------------------------------------------------------------------------
     // methods
     // ------------------------------------------------------------------------
-    
+
+    /**
+     * Returns the step configuration.
+     *
+     * @return void
+     *
+     * @author Sascha Koehler <skoehler@pixeltricks.de>
+     * @copyright 2011 pixeltricks GmbH
+     * @since 06.04.2011
+     */
+    public function getStepConfiguration() {
+        return array(
+            'silvercart_payment_prepayment/templates/checkout/' => array(
+                'prefix' => 'SilvercartPaymentPrepaymentCheckoutFormStep'
+            )
+        );
+    }
+
     /**
      * Hook
      *
