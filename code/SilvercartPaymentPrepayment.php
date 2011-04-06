@@ -79,7 +79,7 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      * @copyright 2011 pixeltricks GmbH
      * @since 05.01.2011
      */
-    protected $moduleName = 'Vorkasse';
+    protected $moduleName = 'Prepayment';
 
     /**
      * Constructor. We localize the static variables here.
