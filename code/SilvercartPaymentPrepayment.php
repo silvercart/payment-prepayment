@@ -125,7 +125,7 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      * @since 05.01.2011
      */
     public function getCMSFields($params = null) {
-        $fields         = parent::getCMSFields_forPopup($params);
+        $fields         = parent::getCMSFieldsForModules($params);
         $fieldLabels    = self::fieldLabels();
         
         $tabTextTemplates = new Tab(_t('SilvercartPaymentPrepayment.TEXT_TEMPLATES', 'text templates', null, 'Textvorlagen'));
