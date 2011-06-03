@@ -179,17 +179,14 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      * @since 05.01.2011
      */
     public function processPaymentAfterOrder($orderObj) {
-
         // send email with payment information to the customer
-        // Eine Email mit Zahlungsanweisungen an den Kunde schicken
         SilvercartShopEmail::send(
             'SilvercartPaymentPrepaymentBankAccountInfo',
             $orderObj->CustomersEmail,
             array(
-                'Order' => $orderObj,
+                'SilvercartOrder' => $orderObj,
             )
         );
-        parent::processPaymentAfterOrder($orderObj);
     }
 
     /**
@@ -238,7 +235,7 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
         parent::processPaymentConfirmationText($orderObj);
         
         $variables = array(
-            'order' => $orderObj
+            'SilvercartOrder' => $orderObj
         );
         
         $templateVariables  = new ArrayData($variables);
@@ -277,7 +274,7 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
             $infoMail->setField('Identifier',   'SilvercartPaymentPrepaymentBankAccountInfo');
             $infoMail->setField('Subject', _t('SilvercartPaymentPrepayment.PAYMENT_INFO', 'payment information regarding your order', null, 'Zahlungsinformationen zu Ihrer Bestellung'));
             $infoMail->setField('EmailText',    '');
-            $infoMail->setField('Variables',    "\$orderInfo\$\n\$orderTotal\$");
+            $infoMail->setField('Variables',    "\$SilvercartOrder");
             $infoMail->write();
         }
     }

@@ -43,7 +43,36 @@ class SilvercartPaymentPrepaymentCheckoutFormStep3 extends SilvercartCheckoutFor
      * @since 06.04.2011
      */
     public function init() {
-        $output = $this->renderWith('SilvercartCheckoutFormStepDefaultOrderConfirmation');
+        $paymentConfirmationText = '';
+        $checkoutData            = $this->controller->getCombinedStepData();
+        
+        if (isset($checkoutData['PaymentMethod'])) {
+            $this->paymentMethodObj = DataObject::get_by_id(
+                'SilvercartPaymentMethod',
+                $checkoutData['PaymentMethod']
+            );
+            
+            if ($this->paymentMethodObj) {
+                
+                if (isset($checkoutData['orderId'])) {
+                    $orderObj = DataObject::get_by_id(
+                        'SilvercartOrder',
+                        $checkoutData['orderId']
+                    );
+
+                    if ($orderObj) {
+                        $paymentConfirmationText = $this->paymentMethodObj->processPaymentConfirmationText($orderObj);
+                        $this->paymentMethodObj->processPaymentAfterOrder($orderObj);
+                    }
+                }
+            }
+        }
+        
+        $templateVariables = array(
+            'PaymentConfirmationText' => $paymentConfirmationText
+        );
+        
+        $output = $this->customise($templateVariables)->renderWith('SilvercartCheckoutFormStepDefaultOrderConfirmation');
         
         return $output;
     }
