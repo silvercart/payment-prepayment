@@ -34,6 +34,29 @@
 class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
 
     /**
+     * Indicates whether a payment module has multiple payment channels or not.
+     *
+     * @var bool
+     *
+     * author Sascha Koehler <skoehler@pixeltricks.de>
+     * @since 01.07.2011
+     */
+    public static $has_multiple_payment_channels = true;
+    
+    /**
+     * A list of possible payment channels.
+     *
+     * @var array
+     *
+     * author Sascha Koehler <skoehler@pixeltricks.de>
+     * @since 01.07.2011
+     */
+    public static $possible_payment_channels = array(
+        'prepayment'    => 'Prepayment',
+        'invoice'       => 'Invoice'
+    );
+    
+    /**
      * classes attributes
      *
      * @var array
@@ -43,20 +66,10 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      * @since 05.01.2011
      */
     public static $db = array(
-        'TextBankAccountInfo' => 'Text'
-    );
-
-    /**
-     * label definition for attributes
-     *
-     * @var array
-     *
-     * @author Sascha Koehler <skoehler@pixeltricks.de>
-     * @copyright 2011 pixeltricks GmbH
-     * @since 05.01.2011
-     */
-    public static $field_labels = array(
-        'TextBankAccountInfo' => 'Bankverbindung'
+        'TextBankAccountInfo'   => 'Text',
+        'InvoiceInfo'           => 'Text',
+        // Payment attributes
+        'PaymentChannel' => 'Enum("prepayment,invoice","prepayment")'
     );
 
     /**
@@ -110,6 +123,7 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
     public function fieldLabels($includerelations = true) {
         $fieldLabels = parent::fieldLabels($includerelations);
         $fieldLabels['TextBankAccountInfo'] = _t('SilvercartPaymentPrepayment.BANK_ACCOUNT_INFO', 'bank account information');
+        $fieldLabels['InvoiceInfo']         = _t('SilvercartPaymentPrepayment.INVOICE_INFO', 'invoice information');
         return $fieldLabels;
     }
 
@@ -128,17 +142,34 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
         $fields         = parent::getCMSFieldsForModules($params);
         $fieldLabels    = self::fieldLabels();
         
+        // Add fields to default tab ------------------------------------------
+        $channelField = new ReadonlyField('DisplayPaymentChannel', _t('SilvercartPaymentPrepayment.PAYMENT_CHANNEL'), $this->getPaymentChannelName($this->PaymentChannel));
+
+        $fields->addFieldToTab('Sections.Basic', $channelField, 'isActive');
+        
+        // Additional tabs and fields -----------------------------------------
         $tabTextTemplates = new Tab(_t('SilvercartPaymentPrepayment.TEXT_TEMPLATES', 'text templates', null, 'Textvorlagen'));
         
         $fields->fieldByName('Sections')->push($tabTextTemplates);
 
         // text templates for tab fields
         // Textvorlagen Tab Felder --------------------------------------------
-        $tabTextTemplates->setChildren(
-            new FieldSet(
-                new TextareaField('TextBankAccountInfo', $fieldLabels['TextBankAccountInfo'], 10, 10)
-            )
-        );
+        switch ($this->PaymentChannel) {
+            case 'invoice':
+                $tabTextTemplates->setChildren(
+                    new FieldSet(
+                        new TextareaField('InvoiceInfo', $fieldLabels['InvoiceInfo'], 10, 10)
+                    )
+                );
+                break;
+            case 'prepayment':
+            default:
+                $tabTextTemplates->setChildren(
+                    new FieldSet(
+                        new TextareaField('TextBankAccountInfo', $fieldLabels['TextBankAccountInfo'], 10, 10)
+                    )
+                );
+        }
 
         return $fields;
     }
@@ -146,23 +177,6 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
     // ------------------------------------------------------------------------
     // methods
     // ------------------------------------------------------------------------
-
-    /**
-     * Returns the step configuration.
-     *
-     * @return void
-     *
-     * @author Sascha Koehler <skoehler@pixeltricks.de>
-     * @copyright 2011 pixeltricks GmbH
-     * @since 06.04.2011
-     */
-    public function getStepConfiguration() {
-        return array(
-            'silvercart_payment_prepayment/templates/checkout/' => array(
-                'prefix' => 'SilvercartPaymentPrepaymentCheckoutFormStep'
-            )
-        );
-    }
 
     /**
      * Hook
@@ -179,14 +193,16 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      * @since 05.01.2011
      */
     public function processPaymentAfterOrder($orderObj) {
-        // send email with payment information to the customer
-        SilvercartShopEmail::send(
-            'SilvercartPaymentPrepaymentBankAccountInfo',
-            $orderObj->CustomersEmail,
-            array(
-                'SilvercartOrder' => $orderObj,
-            )
-        );
+        if ($this->PaymentChannel == 'prepayment') {
+            // send email with payment information to the customer
+            SilvercartShopEmail::send(
+                'SilvercartPaymentPrepaymentBankAccountInfo',
+                $orderObj->CustomersEmail,
+                array(
+                    'SilvercartOrder' => $orderObj,
+                )
+            );
+        }
     }
 
     /**
@@ -237,10 +253,18 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
         $variables = array(
             'SilvercartOrder' => $orderObj
         );
-        
         $templateVariables  = new ArrayData($variables);
-        $textTemplate       = new SSViewer_FromString($this->TextBankAccountInfo);
-        $text               = HTTP::absoluteURLs($textTemplate->process($templateVariables));
+        
+        switch ($this->PaymentChannel) {
+            case 'invoice':
+                $textTemplate = new SSViewer_FromString($this->InvoiceInfo);
+                break;
+            case 'prepayment':
+            default:
+                $textTemplate = new SSViewer_FromString($this->TextBankAccountInfo);
+        }
+        
+        $text = HTTP::absoluteURLs($textTemplate->process($templateVariables));
         
         return $text;
     }

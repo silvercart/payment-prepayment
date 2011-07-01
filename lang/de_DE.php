@@ -32,9 +32,14 @@ if (array_key_exists('de_DE', $lang) && is_array($lang['de_DE'])) {
     $lang['de_DE'] = $lang['en_US'];
 }
 
-$lang['de_DE']['SilvercartPaymentPrepayment']['NAME']       = 'Vorkasse';
-$lang['de_DE']['SilvercartPaymentPrepayment']['TITLE']      = 'Vorkasse';
-$lang['de_DE']['SilvercartPaymentPrepayment']['PAYMENT_INFO'] = 'Zahlungsinformationen zu Ihrer Bestellung';
-$lang['de_DE']['SilvercartPaymentPrepayment']['TEXT_TEMPLATES'] = 'Textvorlagen';
-$lang['de_DE']['SilvercartPaymentPrepayment']['BANK_ACCOUNT_INFO'] = 'Bankverbindung';
+$lang['de_DE']['SilvercartPaymentPrepayment']['BANK_ACCOUNT_INFO']              = 'Bankverbindung';
+$lang['de_DE']['SilvercartPaymentPrepayment']['INVOICE_INFO']                   = 'Informationen zur Zahlung per Rechnung';
+$lang['de_DE']['SilvercartPaymentPrepayment']['NAME']                           = 'Vorkasse';
+$lang['de_DE']['SilvercartPaymentPrepayment']['PAYMENT_INFO']                   = 'Zahlungsinformationen zu Ihrer Bestellung';
+$lang['de_DE']['SilvercartPaymentPrepayment']['TEXT_TEMPLATES']                 = 'Textvorlagen';
+$lang['de_DE']['SilvercartPaymentPrepayment']['TITLE']                          = 'Vorkasse';
+
+$lang['de_DE']['SilvercartPaymentPrepayment']['PAYMENT_CHANNEL']                = 'Zahlungsart';
+$lang['de_DE']['SilvercartPaymentPrepayment']['PAYMENT_CHANNEL_INVOICE']        = 'Rechnung';
+$lang['de_DE']['SilvercartPaymentPrepayment']['PAYMENT_CHANNEL_PREPAYMENT']     = 'Vorkasse';
 
