@@ -66,8 +66,6 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      * @since 05.01.2011
      */
     public static $db = array(
-        'TextBankAccountInfo'   => 'Text',
-        'InvoiceInfo'           => 'Text',
         // Payment attributes
         'PaymentChannel' => 'Enum("prepayment,invoice","prepayment")'
     );
@@ -81,6 +79,23 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      */
     public static $has_one = array(
         'SilvercartHandlingCost' => 'SilvercartHandlingCostPrepayment'
+    );
+    
+    /**
+     * 1:n relationships.
+     *
+     * @var array
+     * 
+     * @author Roland Lehmann <rlehmann@pixeltricks.de>
+     * @since 28.01.2012
+     */
+    public static $has_many = array(
+        'SilvercartPaymentPrepaymentLanguages' => 'SilvercartPaymentPrepaymentLanguage'
+    );
+    
+    public static $casting = array(
+        'TextBankAccountInfo'   => 'Text',
+        'InvoiceInfo'           => 'Text'
     );
 
     /**
@@ -110,20 +125,60 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
     public function  __construct($record = null, $isSingleton = false) {
         parent::__construct($record, $isSingleton);
     }
-
+    
     /**
-     * i18n for labels
+     * getter for the multilingual attribute TextBankAccountInfo
      *
-     * @param boolean $includerelations a boolean value to indicate if the labels returned include relation fields
+     * @return string 
+     * 
+     * @author Roland Lehmann <rlehmann@pixeltricks.de>
+     * @since 28.01.2012
+     */
+    public function getTextBankAccountInfo() {
+        $text = '';
+        if ($this->getLanguage()) {
+            $text = $this->getLanguage()->TextBankAccountInfo;
+        }
+        return $text;
+    }
+    
+    /**
+     * getter for the multilingual attribute InvoiceInfo
+     *
+     * @return string 
+     * 
+     * @author Roland Lehmann <rlehmann@pixeltricks.de>
+     * @since 28.01.2012
+     */
+    public function getInvoiceInfo() {
+        $text = '';
+        if ($this->getLanguage()) {
+            $text = $this->getLanguage()->InvoiceInfo;
+        }
+        return $text;
+    }
+    
+    /**
+     * Field labels for display in tables.
+     *
+     * @param boolean $includerelations A boolean value to indicate if the labels returned include relation fields
+     *
+     * @return array
      *
      * @author Roland Lehmann <rlehmann@pixeltricks.de>
-     * @since 28.2.2011
-     * @return array
+     * @copyright 2012 pixeltricks GmbH
+     * @since 28.01.2012
      */
     public function fieldLabels($includerelations = true) {
-        $fieldLabels = parent::fieldLabels($includerelations);
-        $fieldLabels['TextBankAccountInfo'] = _t('SilvercartPaymentPrepayment.BANK_ACCOUNT_INFO', 'bank account information');
-        $fieldLabels['InvoiceInfo']         = _t('SilvercartPaymentPrepayment.INVOICE_INFO', 'invoice information');
+        $fieldLabels = array_merge(
+                parent::fieldLabels($includerelations),             array(
+                    'TextBankAccountInfo' => _t('SilvercartPaymentPrepayment.BANK_ACCOUNT_INFO'),
+                    'InvoiceInfo' => _t('SilvercartPaymentPrepayment.INVOICE_INFO'),
+                    'SilvercartPaymentPrepaymentLanguages' => _t('SilvercartPaymentPrepaymentLanguage.PLURALNAME')
+                )
+        );
+
+        $this->extend('updateFieldLabels', $fieldLabels);
         return $fieldLabels;
     }
 
@@ -139,8 +194,7 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      * @since 05.01.2011
      */
     public function getCMSFields($params = null) {
-        $fields         = parent::getCMSFieldsForModules($params);
-        $fieldLabels    = self::fieldLabels();
+        $fields = parent::getCMSFieldsForModules($params);
         
         // Add fields to default tab ------------------------------------------
         $channelField = new ReadonlyField('DisplayPaymentChannel', _t('SilvercartPaymentPrepayment.PAYMENT_CHANNEL'), $this->getPaymentChannelName($this->PaymentChannel));
@@ -149,16 +203,19 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
         
         // Additional tabs and fields -----------------------------------------
         $tabTextTemplates = new Tab(_t('SilvercartPaymentPrepayment.TEXT_TEMPLATES', 'text templates', null, 'Textvorlagen'));
-        
+        $translationsTab = new Tab('translations');
+        $translationsTab->setTitle(_t('SilvercartConfig.TRANSLATIONS'));
+        $translationsTab->push(new ComplexTableField($this, 'SilvercartPaymentPrepaymentLanguages', 'SilvercartPaymentPrepaymentLanguage'));
         $fields->fieldByName('Sections')->push($tabTextTemplates);
-
+        $fields->fieldByName('Sections')->push($translationsTab);
         // text templates for tab fields
         // Textvorlagen Tab Felder --------------------------------------------
+        $languageFields = SilvercartLanguageHelper::prepareCMSFields($this->getLanguage());
         switch ($this->PaymentChannel) {
             case 'invoice':
                 $tabTextTemplates->setChildren(
                     new FieldSet(
-                        new TextareaField('InvoiceInfo', $fieldLabels['InvoiceInfo'], 10, 10)
+                        $languageFields->fieldByName('InvoiceInfo')
                     )
                 );
                 break;
@@ -166,7 +223,7 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
             default:
                 $tabTextTemplates->setChildren(
                     new FieldSet(
-                        new TextareaField('TextBankAccountInfo', $fieldLabels['TextBankAccountInfo'], 10, 10)
+                        $languageFields->fieldByName('TextBankAccountInfo')
                     )
                 );
         }
@@ -296,10 +353,50 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
         if (!$checkInfoMail) {
             $infoMail = new SilvercartShopEmail();
             $infoMail->setField('Identifier',   'SilvercartPaymentPrepaymentBankAccountInfo');
-            $infoMail->setField('Subject', _t('SilvercartPaymentPrepayment.PAYMENT_INFO', 'payment information regarding your order', null, 'Zahlungsinformationen zu Ihrer Bestellung'));
+            $infoMail->setField('Subject', _t('SilvercartPaymentPrepayment.PAYMENT_INFO'));
             $infoMail->setField('EmailText',    '');
             $infoMail->setField('Variables',    "\$SilvercartOrder");
             $infoMail->write();
         }
+    }
+    
+    /**
+     * Searchable fields
+     *
+     * @return array
+     *
+     * @author Roland Lehmann <rlehmann@pixeltricks.de>
+     * @copyright 2011 pixeltricks GmbH
+     * @since 5.7.2011
+     */
+    public function searchableFields() {
+        $searchableFields = array(
+            "SilvercartPaymentPrepaymentLanguages.Name" => array(
+                'title'  => _t('SilvercartProduct.COLUMN_TITLE'),
+                'filter' => 'PartialMatchFilter'
+            ),
+            'isActive' => array(
+                'title'  => _t("SilvercartShopAdmin.PAYMENT_ISACTIVE"),
+                'filter' => 'ExactMatchFilter'
+            ),
+            'minAmountForActivation' => array(
+                'title'  => _t('SilvercartShopAdmin.PAYMENT_MINAMOUNTFORACTIVATION'),
+                'filter' => 'GreaterThanFilter'
+            ),
+            'maxAmountForActivation' => array(
+                'title'  => _t('SilvercartShopAdmin.PAYMENT_MAXAMOUNTFORACTIVATION'),
+                'filter' => 'LessThanFilter'
+            ),
+            'SilvercartZone.ID' => array(
+                'title'  => _t("SilvercartCountry.ATTRIBUTED_ZONES"),
+                'filter' => 'ExactMatchFilter'
+            ),
+            'SilvercartCountries.ID' => array(
+                'title'  => _t("SilvercartPaymentMethod.ATTRIBUTED_COUNTRIES"),
+                'filter' => 'ExactMatchFilter'
+            )
+        );
+        $this->extend('updateSearchableFields', $searchableFields);
+        return $searchableFields;
     }
 }
