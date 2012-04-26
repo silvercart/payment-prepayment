@@ -71,17 +71,6 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
     );
 
     /**
-     * define 1:1 relations
-     *
-     * @author Sascha Koehler <skoehler@pixeltricks.de>
-     * @copyright 2011 pixeltricks GmbH
-     * @since 05.01.2011
-     */
-    public static $has_one = array(
-        'SilvercartHandlingCost' => 'SilvercartHandlingCostPrepayment'
-    );
-    
-    /**
      * 1:n relationships.
      *
      * @var array

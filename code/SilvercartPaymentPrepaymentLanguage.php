@@ -114,5 +114,27 @@ class SilvercartPaymentPrepaymentLanguage extends SilvercartPaymentMethodLanguag
         $this->extend('updateFieldLabels', $fieldLabels);
         return $fieldLabels;
     }
+    
+    /**
+     * CMS fields for this object
+     *
+     * @param array $params Params
+     * 
+     * @return FieldSet
+     */
+    public function getCMSFields($params = null) {
+        $fields = parent::getCMSFields($params);
+        
+        switch ($this->SilvercartPaymentPrepayment()->PaymentChannel) {
+            case 'invoice':
+                $fields->removeByName('TextBankAccountInfo');
+                break;
+            case 'prepayment':
+            default:
+                $fields->removeByName('InvoiceInfo');
+        }
+        
+        return $fields;
+    }
 }
 
