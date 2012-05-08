@@ -22,3 +22,4 @@
  * @ignore
  */
 
+DataObject::add_extension('SilvercartPaymentPrepayment',                'SilvercartDataObjectMultilingualDecorator');
