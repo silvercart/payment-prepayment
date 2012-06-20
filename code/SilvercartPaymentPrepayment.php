@@ -178,9 +178,8 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      *
      * @return FieldSet
      *
-     * @author Sascha Koehler <skoehler@pixeltricks.de>
-     * @copyright 2011 pixeltricks GmbH
-     * @since 05.01.2011
+     * @author Sascha Koehler <skoehler@pixeltricks.de>, Sebastian Diel <sdiel@pixeltricks.de>
+     * @since 20.06.2012
      */
     public function getCMSFields($params = null) {
         $fields = parent::getCMSFieldsForModules($params);
@@ -197,7 +196,7 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
         $fields->fieldByName('Sections')->push($tabTextTemplates);
         // text templates for tab fields
         // Textvorlagen Tab Felder --------------------------------------------
-        $languageFields = SilvercartLanguageHelper::prepareCMSFields($this->getLanguage());
+        $languageFields = SilvercartLanguageHelper::prepareCMSFields($this->getLanguage(true));
         switch ($this->PaymentChannel) {
             case 'invoice':
                 $tabTextTemplates->setChildren(
