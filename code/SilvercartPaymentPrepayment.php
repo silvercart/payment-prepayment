@@ -192,15 +192,15 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
         
         // Additional tabs and fields -----------------------------------------
         $tabTextTemplates = new Tab(_t('SilvercartPaymentPrepayment.TEXT_TEMPLATES', 'text templates', null, 'Textvorlagen'));
-        $fields->addFieldToTab('Sections.Translations', new ComplexTableField($this, 'SilvercartPaymentPrepaymentLanguages', 'SilvercartPaymentPrepaymentLanguage'));
+        #$fields->addFieldToTab('Sections.Translations', new ComplexTableField($this, 'SilvercartPaymentPrepaymentLanguages', 'SilvercartPaymentPrepaymentLanguage'));
         $fields->fieldByName('Sections')->push($tabTextTemplates);
         // text templates for tab fields
         // Textvorlagen Tab Felder --------------------------------------------
-        $languageFields = SilvercartLanguageHelper::prepareCMSFields($this->getLanguage(true));
+        $languageFields = SilvercartLanguageHelper::prepareCMSFields($this->getLanguageClassName());
         switch ($this->PaymentChannel) {
             case 'invoice':
                 $tabTextTemplates->setChildren(
-                    new FieldSet(
+                    new FieldList(
                         $languageFields->fieldByName('InvoiceInfo')
                     )
                 );
@@ -208,7 +208,7 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
             case 'prepayment':
             default:
                 $tabTextTemplates->setChildren(
-                    new FieldSet(
+                    new FieldList(
                         $languageFields->fieldByName('TextBankAccountInfo')
                     )
                 );

@@ -1,0 +1,11 @@
+de:
+  SilvercartPaymentPrepayment:
+    BANK_ACCOUNT_INFO: "Bankverbindung"
+    INVOICE_INFO: "Informationen zur Zahlung per Rechnung"
+    NAME: "Vorkasse"
+    PAYMENT_CHANNEL: "Zahlungsart"
+    PAYMENT_CHANNEL_INVOICE: "Rechnung"
+    PAYMENT_CHANNEL_PREPAYMENT: "Vorkasse"
+    PAYMENT_INFO: "Zahlungsinformationen zu Ihrer Bestellung"
+    TEXT_TEMPLATES: "Textvorlagen"
+    TITLE: "Vorkasse"

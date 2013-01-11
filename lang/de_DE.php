@@ -24,15 +24,7 @@
  * @ignore
  */
 
-i18n::include_locale_file('silvercart', 'en_US');
-
 global $lang;
-
-if (array_key_exists('de_DE', $lang) && is_array($lang['de_DE'])) {
-    $lang['de_DE'] = array_merge($lang['en_US'], $lang['de_DE']);
-} else {
-    $lang['de_DE'] = $lang['en_US'];
-}
 
 $lang['de_DE']['SilvercartPaymentPrepayment']['BANK_ACCOUNT_INFO']              = 'Bankverbindung';
 $lang['de_DE']['SilvercartPaymentPrepayment']['INVOICE_INFO']                   = 'Informationen zur Zahlung per Rechnung';

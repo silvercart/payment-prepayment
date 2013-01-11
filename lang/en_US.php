@@ -26,12 +26,6 @@
 
 global $lang;
 
-
-
-
-
-
-
 $lang['en_US']['SilvercartPaymentPrepayment']['BANK_ACCOUNT_INFO']              = 'bank account information';
 $lang['en_US']['SilvercartPaymentPrepayment']['INVOICE_INFO']                   = 'invoice information';
 $lang['en_US']['SilvercartPaymentPrepayment']['NAME']                           = 'Prepayment';

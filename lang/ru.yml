@@ -1,0 +1,11 @@
+ru:
+  SilvercartPaymentPrepayment:
+    BANK_ACCOUNT_INFO: "Банковские реквизиты"
+    INVOICE_INFO: "Информация по оплате после получения заказа"
+    NAME: "Предоплата"
+    PAYMENT_CHANNEL: "Способ оплаты"
+    PAYMENT_CHANNEL_INVOICE: "Счет – фактура"
+    PAYMENT_CHANNEL_PREPAYMENT: "Предоплата"
+    PAYMENT_INFO: "информация по оплате Вашего заказа"
+    TEXT_TEMPLATES: "Текстовые макеты"
+    TITLE: "Предоплата"
