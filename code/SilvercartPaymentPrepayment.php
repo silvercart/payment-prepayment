@@ -188,12 +188,12 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
         // Add fields to default tab ------------------------------------------
         $channelField = new ReadonlyField('DisplayPaymentChannel', _t('SilvercartPaymentPrepayment.PAYMENT_CHANNEL'), $this->getPaymentChannelName($this->PaymentChannel));
 
-        $fields->addFieldToTab('Sections.Basic', $channelField, 'mode');
+        $fields->addFieldToTab('Root.Basic', $channelField, 'mode');
         
         // Additional tabs and fields -----------------------------------------
         $tabTextTemplates = new Tab(_t('SilvercartPaymentPrepayment.TEXT_TEMPLATES', 'text templates', null, 'Textvorlagen'));
-        #$fields->addFieldToTab('Sections.Translations', new ComplexTableField($this, 'SilvercartPaymentPrepaymentLanguages', 'SilvercartPaymentPrepaymentLanguage'));
-        $fields->fieldByName('Sections')->push($tabTextTemplates);
+        #$fields->addFieldToTab('Root.Translations', new ComplexTableField($this, 'SilvercartPaymentPrepaymentLanguages', 'SilvercartPaymentPrepaymentLanguage'));
+        $fields->fieldByName('Root')->push($tabTextTemplates);
         // text templates for tab fields
         // Textvorlagen Tab Felder --------------------------------------------
         $languageFields = SilvercartLanguageHelper::prepareCMSFields($this->getLanguageClassName());
