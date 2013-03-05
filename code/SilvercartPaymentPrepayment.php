@@ -1,6 +1,6 @@
 <?php
 /**
- * Copyright 2010, 2011 pixeltricks GmbH
+ * Copyright 2010 - 2013 pixeltricks GmbH
  *
  * This file is part of SilvercartPrepaymentPayment.
  *
@@ -27,7 +27,7 @@
  * @package Silvercart
  * @subpackage Payment
  * @author Sascha Koehler <skoehler@pixeltricks.de>
- * @copyright 2011 pixeltricks GmbH
+ * @copyright 2013 pixeltricks GmbH
  * @since 05.01.2011
  * @license http://www.gnu.org/licenses/lgpl.html GNU Lesser General Public License
  */
@@ -37,9 +37,6 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      * Indicates whether a payment module has multiple payment channels or not.
      *
      * @var bool
-     *
-     * author Sascha Koehler <skoehler@pixeltricks.de>
-     * @since 01.07.2011
      */
     public static $has_multiple_payment_channels = true;
     
@@ -47,9 +44,6 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      * A list of possible payment channels.
      *
      * @var array
-     *
-     * author Sascha Koehler <skoehler@pixeltricks.de>
-     * @since 01.07.2011
      */
     public static $possible_payment_channels = array(
         'prepayment'    => 'Prepayment',
@@ -60,13 +54,8 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      * classes attributes
      *
      * @var array
-     *
-     * @author Sascha Koehler <skoehler@pixeltricks.de>
-     * @copyright 2011 pixeltricks GmbH
-     * @since 05.01.2011
      */
     public static $db = array(
-        // Payment attributes
         'PaymentChannel' => 'Enum("prepayment,invoice","prepayment")'
     );
 
@@ -74,14 +63,16 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      * 1:n relationships.
      *
      * @var array
-     * 
-     * @author Roland Lehmann <rlehmann@pixeltricks.de>
-     * @since 28.01.2012
      */
     public static $has_many = array(
         'SilvercartPaymentPrepaymentLanguages' => 'SilvercartPaymentPrepaymentLanguage'
     );
-    
+
+    /**
+     * Casted attributes
+     *
+     * @var array
+     */
     public static $casting = array(
         'TextBankAccountInfo'   => 'Text',
         'InvoiceInfo'           => 'Text'
@@ -91,60 +82,25 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      * module name to be shown in backend interface
      *
      * @var string
-     *
-     * @author Sascha Koehler <skoehler@pixeltricks.de>
-     * @copyright 2011 pixeltricks GmbH
-     * @since 05.01.2011
      */
     protected $moduleName = 'Prepayment';
-
-    /**
-     * Constructor. We localize the static variables here.
-     *
-     * @param array|null $record      This will be null for a new database record.
-     *                                  Alternatively, you can pass an array of
-     *                                  field values.  Normally this contructor is only used by the internal systems that get objects from the database.
-     * @param boolean    $isSingleton This this to true if this is a singleton() object, a stub for calling methods.  Singletons
-     *                                  don't have their defaults set.
-     *
-     * @author Roland Lehmann <rlehmann@pixeltricks.de>
-     * @copyright 2011 pixeltricks GmbH
-     * @since 20.02.2011
-     */
-    public function  __construct($record = null, $isSingleton = false) {
-        parent::__construct($record, $isSingleton);
-    }
     
     /**
      * getter for the multilingual attribute TextBankAccountInfo
      *
      * @return string 
-     * 
-     * @author Roland Lehmann <rlehmann@pixeltricks.de>
-     * @since 28.01.2012
      */
     public function getTextBankAccountInfo() {
-        $text = '';
-        if ($this->getLanguage()) {
-            $text = $this->getLanguage()->TextBankAccountInfo;
-        }
-        return $text;
+        return $this->getLanguageFieldValue('TextBankAccountInfo');
     }
     
     /**
      * getter for the multilingual attribute InvoiceInfo
      *
      * @return string 
-     * 
-     * @author Roland Lehmann <rlehmann@pixeltricks.de>
-     * @since 28.01.2012
      */
     public function getInvoiceInfo() {
-        $text = '';
-        if ($this->getLanguage()) {
-            $text = $this->getLanguage()->InvoiceInfo;
-        }
-        return $text;
+        return $this->getLanguageFieldValue('InvoiceInfo');
     }
     
     /**
@@ -154,16 +110,16 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      *
      * @return array
      *
-     * @author Roland Lehmann <rlehmann@pixeltricks.de>
-     * @copyright 2012 pixeltricks GmbH
-     * @since 28.01.2012
+     * @author Roland Lehmann <rlehmann@pixeltricks.de>, Sebastian Diel <sdiel@pixeltricks.de>
+     * @since 13.02.2013
      */
     public function fieldLabels($includerelations = true) {
         $fieldLabels = array_merge(
-                parent::fieldLabels($includerelations),             array(
-                    'TextBankAccountInfo' => _t('SilvercartPaymentPrepayment.BANK_ACCOUNT_INFO'),
-                    'InvoiceInfo' => _t('SilvercartPaymentPrepayment.INVOICE_INFO'),
-                    'SilvercartPaymentPrepaymentLanguages' => _t('SilvercartPaymentPrepaymentLanguage.PLURALNAME')
+                parent::fieldLabels($includerelations),
+                array(
+                    'TextBankAccountInfo'                   => _t('SilvercartPaymentPrepayment.BANK_ACCOUNT_INFO'),
+                    'InvoiceInfo'                           => _t('SilvercartPaymentPrepayment.INVOICE_INFO'),
+                    'SilvercartPaymentPrepaymentLanguages'  => _t('SilvercartPaymentPrepaymentLanguage.PLURALNAME')
                 )
         );
 
@@ -192,7 +148,6 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
         
         // Additional tabs and fields -----------------------------------------
         $tabTextTemplates = new Tab(_t('SilvercartPaymentPrepayment.TEXT_TEMPLATES', 'text templates', null, 'Textvorlagen'));
-        #$fields->addFieldToTab('Root.Translations', new ComplexTableField($this, 'SilvercartPaymentPrepaymentLanguages', 'SilvercartPaymentPrepaymentLanguage'));
         $fields->fieldByName('Root')->push($tabTextTemplates);
         // text templates for tab fields
         // Textvorlagen Tab Felder --------------------------------------------
@@ -352,7 +307,6 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      * @return array
      *
      * @author Roland Lehmann <rlehmann@pixeltricks.de>
-     * @copyright 2011 pixeltricks GmbH
      * @since 5.7.2011
      */
     public function searchableFields() {
