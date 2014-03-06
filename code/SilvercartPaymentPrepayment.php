@@ -168,6 +168,14 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
                     )
                 );
         }
+        
+        $translations = new GridField(
+                'SilvercartPaymentPrepaymentLanguages',
+                $this->fieldLabel('SilvercartPaymentPrepaymentLanguages'),
+                $this->SilvercartPaymentPrepaymentLanguages(),
+                SilvercartGridFieldConfig_ExclusiveRelationEditor::create()
+        );
+        $fields->addFieldToTab('Root.Translations', $translations);
 
         return $fields;
     }
