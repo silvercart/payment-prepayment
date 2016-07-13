@@ -120,7 +120,7 @@ class SilvercartPaymentPrepaymentLanguage extends SilvercartPaymentMethodLanguag
      *
      * @param array $params Params
      * 
-     * @return FieldSet
+     * @return FieldList
      */
     public function getCMSFields($params = null) {
         $fields = parent::getCMSFields($params);

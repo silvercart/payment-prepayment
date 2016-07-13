@@ -132,10 +132,7 @@ class SilvercartPaymentPrepayment extends SilvercartPaymentMethod {
      *
      * @param mixed $params optional
      *
-     * @return FieldSet
-     *
-     * @author Sascha Koehler <skoehler@pixeltricks.de>, Sebastian Diel <sdiel@pixeltricks.de>
-     * @since 20.06.2012
+     * @return FieldList
      */
     public function getCMSFields($params = null) {
         $fields = parent::getCMSFieldsForModules($params);
