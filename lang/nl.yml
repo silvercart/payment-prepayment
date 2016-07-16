@@ -1,0 +1,11 @@
+en:
+  SilvercartPaymentPrepayment:
+    BANK_ACCOUNT_INFO: "bank account information"
+    INVOICE_INFO: "invoice information"
+    NAME: "Prepayment"
+    PAYMENT_CHANNEL: "Payment Channel"
+    PAYMENT_CHANNEL_INVOICE: "Invoice"
+    PAYMENT_CHANNEL_PREPAYMENT: "Prepayment"
+    PAYMENT_INFO: "payment information regarding your order"
+    TEXT_TEMPLATES: "text templates"
+    TITLE: "Prepayment"
