@@ -2,7 +2,7 @@ nl:
   SilvercartPaymentPrepayment:
     BANK_ACCOUNT_INFO: "bankgegevens"
     INVOICE_INFO: "factuur"
-    NAAM: "Vooruitbetaling"
+    NAME: "Vooruitbetaling"
     PAYMENT_CHANNEL: "Betaling Channel"
     PAYMENT_CHANNEL_INVOICE: "Factuur"
     PAYMENT_CHANNEL_PREPAYMENT: "Vooruitbetaling"
