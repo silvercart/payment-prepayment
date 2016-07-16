@@ -1,11 +1,11 @@
 nl:
- SilvercartPaymentPrepayment:
-   BANK_ACCOUNT_INFO: "bankgegevens"
-   INVOICE_INFO: "factuur"
-   NAAM: "Vooruitbetaling"
-   PAYMENT_CHANNEL: "Betaling Channel"
-   PAYMENT_CHANNEL_INVOICE: "Factuur"
-   PAYMENT_CHANNEL_PREPAYMENT: "Vooruitbetaling"
-   PAYMENT_INFO: "betaling informatie met betrekking tot uw bestelling"
-   TEXT_TEMPLATES: "text templates"
-   TITLE: "Vooruitbetaling"
+  SilvercartPaymentPrepayment:
+    BANK_ACCOUNT_INFO: "bankgegevens"
+    INVOICE_INFO: "factuur"
+    NAAM: "Vooruitbetaling"
+    PAYMENT_CHANNEL: "Betaling Channel"
+    PAYMENT_CHANNEL_INVOICE: "Factuur"
+    PAYMENT_CHANNEL_PREPAYMENT: "Vooruitbetaling"
+    PAYMENT_INFO: "betaling informatie met betrekking tot uw bestelling"
+    TEXT_TEMPLATES: "text templates"
+    TITLE: "Vooruitbetaling"
