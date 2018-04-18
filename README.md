@@ -6,7 +6,8 @@ Basic payment method for SilverCart
 * Ramon Kupper <rkupper@pixeltricks.de>
 
 ## Requirements
-* SilverStripe 3.1
+* SilverStripe 4.0
+* SilverCart 4.0
 
 ## Summary
 SilverCart is an Open Source E-Commerce module for the CMS Framework SilverStripe.

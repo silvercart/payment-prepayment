@@ -1,0 +1,6 @@
+---
+Name: silvercart-payment-prepayment-extensions
+---
+SilverCart\Prepayment\Model\Prepayment:
+  extensions:
+    - SilverCart\Model\Translation\TranslatableDataObjectExtension
