@@ -278,7 +278,7 @@ class Prepayment extends PaymentMethod {
      * @return ArrayList
      */
     public function getBankAccounts() {
-        if ($this->PaymetChannel != 'prepayment') {
+        if ($this->PaymentChannel != 'prepayment') {
             return new ArrayList();
         }
         $bankAccounts    = new ArrayList();
@@ -307,7 +307,7 @@ class Prepayment extends PaymentMethod {
      * @since 18.04.2018
      */
     protected function addBankAccountCMSFields(FieldList $fields) {
-        if ($this->PaymetChannel != 'prepayment') {
+        if ($this->PaymentChannel != 'prepayment') {
             return;
         }
         $fields->findOrMakeTab('Root.BankAccounts', $this->fieldLabel('BankAccounts'));
@@ -338,7 +338,7 @@ class Prepayment extends PaymentMethod {
      * @since 18.04.2018
      */
     protected function writeBankAccounts() {
-        if ($this->PaymetChannel != 'prepayment') {
+        if ($this->PaymentChannel != 'prepayment') {
             return;
         }
         $requests        = Controller::curr()->getRequest();
@@ -363,14 +363,49 @@ class Prepayment extends PaymentMethod {
      **                                                                                           ** 
      ** Payment processing section. SilverCart checkout will call these methods:                  ** 
      **                                                                                           ** 
-     **     - processBeforeOrder                                                                  ** 
-     **     - processAfterOrder                                                                   ** 
+     **     - canProcessBeforePaymentProvider                                                     ** 
+     **     - canProcessAfterPaymentProvider                                                      ** 
+     **     - canProcessBeforeOrder                                                               ** 
+     **     - canProcessAfterOrder                                                                ** 
+     **     - canPlaceOrder                                                                       ** 
      **     - processBeforePaymentProvider                                                        ** 
      **     - processAfterPaymentProvider                                                         ** 
+     **     - processBeforeOrder                                                                  ** 
+     **     - processAfterOrder                                                                   ** 
+     **     - processNotification                                                                 ** 
      **     - processConfirmationText                                                             ** 
      **                                                                                           ** 
      ***********************************************************************************************
      **********************************************************************************************/
+    
+    /**
+     * Returns whether the checkout is ready to call self::processAfterOrder().
+     * 
+     * @param array $checkoutData Checkout data
+     * 
+     * @return void
+     *
+     * @author Sebastian Diel <sdiel@pixeltricks.de>
+     * @since 24.04.2018
+     */
+    public function canProcessAfterOrder(Order $order, array $checkoutData) {
+        return true;
+    }
+    
+    /**
+     * Is called by default checkout right before placing an order.
+     * If this returns false, the order won't be placed and the checkout won't be finalized.
+     * 
+     * @param array $checkoutData Checkout data
+     * 
+     * @return void
+     *
+     * @author Sebastian Diel <sdiel@pixeltricks.de>
+     * @since 24.04.2018
+     */
+    public function canPlaceOrder(array $checkoutData) {
+        return true;
+    }
     
     /**
      * Is called by default checkout right after placing an order.

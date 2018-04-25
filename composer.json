@@ -1,5 +1,5 @@
 {
-	"name": "silvercart/payment_prepayment",
+	"name": "silvercart/payment-prepayment",
 	"type": "silverstripe-module",
 	"description": "Payment module for the SilverCart ecommerce module for SilverStripe",
 	"homepage": "http://www.silvercart.org",
