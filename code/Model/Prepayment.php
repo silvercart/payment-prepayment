@@ -312,9 +312,9 @@ class Prepayment extends PaymentMethod {
         }
         $fields->findOrMakeTab('Root.BankAccounts', $this->fieldLabel('BankAccounts'));
         $bankAccounts = $this->getBankAccounts();
-        $highestID    = $bankAccounts->sort('ID', 'DESC')->first()->ID;
-        if (!is_int($highestID)) {
-            $highestID = 0;
+        $highestID    = 0;
+        if ($bankAccounts->exists()) {
+            $highestID = $bankAccounts->sort('ID', 'DESC')->first()->ID;
         }
         $bankAccounts->add(new ArrayData(['ID' => $highestID+1, 'Name' => '', 'IBAN' => '', 'BIC' => '']));
         $index = 1;
