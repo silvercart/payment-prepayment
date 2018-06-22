@@ -26,13 +26,15 @@
     
 <table>
     <tr>
-        <td><strong>Bank: </strong></td>
-        <td><strong> IBAN: </strong></td>
-        <td><strong> BIC/SWIFT: </strong></td>
+        <td><strong><%t SilverCart\Prepayment\Model\Prepayment.BankAccountOwner 'Account Holder' %></strong></td>
+        <td><strong><%t SilverCart\Prepayment\Model\Prepayment.BankAccountName 'Bank' %></strong></td>
+        <td><strong><%t SilverCart\Prepayment\Model\Prepayment.BankAccountIBAN 'IBAN' %></strong></td>
+        <td><strong><%t SilverCart\Prepayment\Model\Prepayment.BankAccountBIC 'BIC / SWIFT' %></strong></td>
     </tr>
 <% if $PaymentMethod.BankAccounts.exists() %>
     <% loop $PaymentMethod.BankAccounts %>
     <tr>
+        <td>{$Owner}</td>
         <td>{$Name}</td>
         <td>{$IBAN}</td>
         <td>{$BIC}</td>

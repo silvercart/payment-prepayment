@@ -7,6 +7,7 @@ de:
   SilverCart\Prepayment\Model\Prepayment:
     BankAccount: "Bankkonto"
     BankAccounts: "Bankkonten"
+    BankAccountOwner: "Kontoinhaber"
     BankAccountName: "Bankinstitut"
     BankAccountIBAN: "IBAN"
     BankAccountBIC: "BIC / SWIFT"

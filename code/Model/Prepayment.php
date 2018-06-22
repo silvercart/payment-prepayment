@@ -119,6 +119,7 @@ class Prepayment extends PaymentMethod {
                     'InfoMailSubject'        => _t(self::class . '.InfoMailSubject', 'payment information regarding your order'),
                     'BankAccount'            => _t(self::class . '.BankAccount', 'Bank Account'),
                     'BankAccounts'           => _t(self::class . '.BankAccounts', 'Bank Accounts'),
+                    'BankAccountOwner'       => _t(self::class . '.BankAccountOwner', 'Account Holder'),
                     'BankAccountName'        => _t(self::class . '.BankAccountName', 'Bank'),
                     'BankAccountIBAN'        => _t(self::class . '.BankAccountIBAN', 'IBAN'),
                     'BankAccountBIC'         => _t(self::class . '.BankAccountBIC', 'BIC / SWIFT'),
@@ -288,16 +289,18 @@ class Prepayment extends PaymentMethod {
         $bankAccountData = unserialize($this->BankAccountData);
         if (is_array($bankAccountData)) {
             foreach ($bankAccountData as $ID => $data) {
-                if (empty($data['Name']) &&
+                if (empty($data['Owner']) &&
+                    empty($data['Name']) &&
                     empty($data['IBAN']) &&
                     empty($data['BIC'])) {
                     continue;
                 }
                 $bankAccounts->add(ArrayData::create([
-                    'ID'   => $ID,
-                    'Name' => $data['Name'],
-                    'IBAN' => $data['IBAN'],
-                    'BIC'  => $data['BIC'],
+                    'ID'    => $ID,
+                    'Owner' => $data['Owner'],
+                    'Name'  => $data['Name'],
+                    'IBAN'  => $data['IBAN'],
+                    'BIC'   => $data['BIC'],
                 ]));
             }
         }
@@ -329,9 +332,10 @@ class Prepayment extends PaymentMethod {
         foreach ($bankAccounts as $bankAccount) {
             $bankAccountGroup = new FieldGroup('BankAccountGroup' . $bankAccount->ID, '', $fields);
             $bankAccountGroup->push(new \SilverStripe\Forms\ReadonlyField('BankAccuntLabel' . $bankAccount->ID, $this->fieldLabel('BankAccount') . ' ' . $index, '  '));
-            $bankAccountGroup->push(new TextField('BankAccunts[' . $bankAccount->ID . '][Name]', $this->fieldLabel('BankAccountName'), $bankAccount->Name));
-            $bankAccountGroup->push(new TextField('BankAccunts[' . $bankAccount->ID . '][IBAN]', $this->fieldLabel('BankAccountIBAN'), $bankAccount->IBAN));
-            $bankAccountGroup->push(new TextField('BankAccunts[' . $bankAccount->ID . '][BIC]',  $this->fieldLabel('BankAccountBIC'),  $bankAccount->BIC));
+            $bankAccountGroup->push(new TextField('BankAccounts[' . $bankAccount->ID . '][Owner]', $this->fieldLabel('BankAccountOwner'), $bankAccount->Owner));
+            $bankAccountGroup->push(new TextField('BankAccounts[' . $bankAccount->ID . '][Name]',  $this->fieldLabel('BankAccountName'),  $bankAccount->Name));
+            $bankAccountGroup->push(new TextField('BankAccounts[' . $bankAccount->ID . '][IBAN]',  $this->fieldLabel('BankAccountIBAN'),  $bankAccount->IBAN));
+            $bankAccountGroup->push(new TextField('BankAccounts[' . $bankAccount->ID . '][BIC]',   $this->fieldLabel('BankAccountBIC'),   $bankAccount->BIC));
             $fields->addFieldToTab('Root.BankAccounts', $bankAccountGroup);
             $index++;
         }
@@ -350,19 +354,21 @@ class Prepayment extends PaymentMethod {
             return;
         }
         $requests        = Controller::curr()->getRequest();
-        $bankAccounts    = $requests->postVar('BankAccunts');
+        $bankAccounts    = $requests->postVar('BankAccounts');
         $bankAccountData = [];
         if (is_array($bankAccounts)) {
             foreach ($bankAccounts as $ID => $data) {
-                if (empty($data['Name']) &&
+                if (empty($data['Owner']) &&
+                    empty($data['Name']) &&
                     empty($data['IBAN']) &&
                     empty($data['BIC'])) {
                     continue;
                 }
                 $bankAccountData[$ID] = [
-                    'Name' => $data['Name'],
-                    'IBAN' => $data['IBAN'],
-                    'BIC'  => $data['BIC'],
+                    'Owner' => $data['Owner'],
+                    'Name'  => $data['Name'],
+                    'IBAN'  => $data['IBAN'],
+                    'BIC'   => $data['BIC'],
                 ];
             }
             if (!empty($bankAccountData)) {
