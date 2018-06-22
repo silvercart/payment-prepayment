@@ -15,9 +15,12 @@
         <td>{$OrderNumber}</td>
     </tr>
 </table>
+    <% if $PaymentMethod.TextBankAccountInfo %>
+        <p>{$PaymentMethod.TextBankAccountInfo}</p>
+    <% end_if %>
     <% if $PaymentMethod.BankAccounts.count() > 1 %>
         <p><%t SilverCart\Model\ShopEmail.PleaseTransferAmountPlural 'Please transfer the total amount of <strong>{amountTotal}</strong> to one of the following bank accounts:' amountTotal=$AmountTotal.Nice %></p>
-    <% else %>
+    <% else_if $PaymentMethod.BankAccounts.exists() %>
         <p><%t SilverCart\Model\ShopEmail.PleaseTransferAmount 'Please transfer the total amount of <strong>{amountTotal}</strong> to the following bank account:' amountTotal=$AmountTotal.Nice %></p>
     <% end_if %>
     

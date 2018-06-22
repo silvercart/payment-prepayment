@@ -7,6 +7,9 @@ en:
   SilverCart\Prepayment\Model\Prepayment:
     BankAccount: "Bank account"
     BankAccounts: "Bank accounts"
+    BankAccountName: "Bank"
+    BankAccountIBAN: "IBAN"
+    BankAccountBIC: "BIC / SWIFT"
     NAME: "Prepayment"
     PAYMENT_CHANNEL: "Payment Channel"
     PAYMENT_CHANNEL_INVOICE: "Invoice"

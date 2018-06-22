@@ -119,6 +119,9 @@ class Prepayment extends PaymentMethod {
                     'InfoMailSubject'        => _t(self::class . '.InfoMailSubject', 'payment information regarding your order'),
                     'BankAccount'            => _t(self::class . '.BankAccount', 'Bank Account'),
                     'BankAccounts'           => _t(self::class . '.BankAccounts', 'Bank Accounts'),
+                    'BankAccountName'        => _t(self::class . '.BankAccountName', 'Bank'),
+                    'BankAccountIBAN'        => _t(self::class . '.BankAccountIBAN', 'IBAN'),
+                    'BankAccountBIC'         => _t(self::class . '.BankAccountBIC', 'BIC / SWIFT'),
                 )
         );
 
@@ -139,20 +142,20 @@ class Prepayment extends PaymentMethod {
         $fields->removeByName('TextBankAccountInfo');
         $fields->removeByName('BankAccountData');
         
-        $tabTextTemplates = new Tab($this->fieldLabel('TextTemplates'));
+        $tabTextTemplates = Tab::create($this->fieldLabel('TextTemplates'));
         $fields->fieldByName('Root')->push($tabTextTemplates);
         
         $languageFields = TranslationTools::prepare_cms_fields($this->getTranslationClassName());
         switch ($this->PaymentChannel) {
             case 'invoice':
-                $tabTextTemplates->setChildren(new FieldList($languageFields->fieldByName('InvoiceInfo')));
+                $tabTextTemplates->setChildren(FieldList::create($languageFields->fieldByName('InvoiceInfo')));
                 break;
             case 'prepayment':
             default:
-                $tabTextTemplates->setChildren(new FieldList($languageFields->fieldByName('TextBankAccountInfo')));
+                $tabTextTemplates->setChildren(FieldList::create($languageFields->fieldByName('TextBankAccountInfo')));
         }
         
-        $translations = new GridField(
+        $translations = GridField::create(
                 'PrepaymentTranslations',
                 $this->fieldLabel('PrepaymentTranslations'),
                 $this->PrepaymentTranslations(),
@@ -179,7 +182,7 @@ class Prepayment extends PaymentMethod {
         
         if (is_null($infoMail) ||
             !$infoMail->exists()) {
-            $infoMail = new ShopEmail();
+            $infoMail = ShopEmail::create();
             $infoMail->TemplateName = 'PaymentPrepaymentBankAccountInfo';
             $infoMail->Subject      = $this->fieldLabel('InfoMailSubject');
             $infoMail->write();
@@ -279,13 +282,18 @@ class Prepayment extends PaymentMethod {
      */
     public function getBankAccounts() {
         if ($this->PaymentChannel != 'prepayment') {
-            return new ArrayList();
+            return ArrayList::create();
         }
-        $bankAccounts    = new ArrayList();
+        $bankAccounts    = ArrayList::create();
         $bankAccountData = unserialize($this->BankAccountData);
         if (is_array($bankAccountData)) {
             foreach ($bankAccountData as $ID => $data) {
-                $bankAccounts->add(new ArrayData([
+                if (empty($data['Name']) &&
+                    empty($data['IBAN']) &&
+                    empty($data['BIC'])) {
+                    continue;
+                }
+                $bankAccounts->add(ArrayData::create([
                     'ID'   => $ID,
                     'Name' => $data['Name'],
                     'IBAN' => $data['IBAN'],
@@ -346,6 +354,11 @@ class Prepayment extends PaymentMethod {
         $bankAccountData = [];
         if (is_array($bankAccounts)) {
             foreach ($bankAccounts as $ID => $data) {
+                if (empty($data['Name']) &&
+                    empty($data['IBAN']) &&
+                    empty($data['BIC'])) {
+                    continue;
+                }
                 $bankAccountData[$ID] = [
                     'Name' => $data['Name'],
                     'IBAN' => $data['IBAN'],
@@ -422,7 +435,8 @@ class Prepayment extends PaymentMethod {
      */
     public function processAfterOrder(Order $order, array $checkoutData) {
         if ($this->PaymentChannel == 'prepayment' &&
-            !empty($this->TextBankAccountInfo)) {
+            (!empty($this->TextBankAccountInfo)) ||
+             $this->getBankAccounts()->exists()) {
             // send email with payment information to the customer
             ShopEmail::send(
                 'PaymentPrepaymentBankAccountInfo',
