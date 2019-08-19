@@ -13,6 +13,7 @@ use SilverCart\Prepayment\Model\PrepaymentTranslation;
 use SilverStripe\Control\Controller;
 use SilverStripe\Control\HTTP;
 use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\Tab;
 use SilverStripe\Forms\GridField\GridField;
 use SilverStripe\ORM\ArrayList;
@@ -33,62 +34,50 @@ use SilverStripe\View\SSViewer_FromString;
  * @since 22.08.2017
  * @license see license file in modules root directory
  */
-class Prepayment extends PaymentMethod {
-
-    /**
-     * Indicates whether a payment module has multiple payment channels or not.
-     *
-     * @var bool
-     */
-    public static $has_multiple_payment_channels = true;
-    
+class Prepayment extends PaymentMethod
+{
     /**
      * A list of possible payment channels.
      *
      * @var array
      */
-    public static $possible_payment_channels = array(
-        'prepayment'    => 'Prepayment',
-        'invoice'       => 'Invoice'
-    );
-    
+    private static $possible_payment_channels = [
+        'prepayment' => 'Prepayment',
+        'invoice'    => 'Invoice',
+    ];
     /**
      * classes attributes
      *
      * @var array
      */
-    private static $db = array(
+    private static $db = [
         'PaymentChannel'  => 'Enum("prepayment,invoice","prepayment")',
         'BankAccountData' => 'Text',
-    );
-
+    ];
     /**
      * 1:n relationships.
      *
      * @var array
      */
-    private static $has_many = array(
+    private static $has_many = [
         'PrepaymentTranslations' => PrepaymentTranslation::class,
-    );
-
+    ];
     /**
      * Casted attributes
      *
      * @var array
      */
-    private static $casting = array(
-        'TextBankAccountInfo'   => 'Text',
-        'InvoiceInfo'           => 'Text',
-        'BankAccounts'          => ArrayList::class,
-    );
-
+    private static $casting = [
+        'TextBankAccountInfo' => 'Text',
+        'InvoiceInfo'         => 'Text',
+        'BankAccounts'        => ArrayList::class,
+    ];
     /**
      * DB table name
      *
      * @var string
      */
     private static $table_name = 'SilvercartPaymentPrepayment';
-
     /**
      * module name to be shown in backend interface
      *
@@ -102,12 +91,9 @@ class Prepayment extends PaymentMethod {
      * @param boolean $includerelations A boolean value to indicate if the labels returned include relation fields
      *
      * @return array
-     *
-     * @author Roland Lehmann <rlehmann@pixeltricks.de>,
-     *         Sebastian Diel <sdiel@pixeltricks.de>
-     * @since 13.02.2013
      */
-    public function fieldLabels($includerelations = true) {
+    public function fieldLabels($includerelations = true) : array
+    {
         $fieldLabels = array_merge(
                 parent::fieldLabels($includerelations),
                 array(
@@ -125,7 +111,6 @@ class Prepayment extends PaymentMethod {
                     'BankAccountBIC'         => _t(self::class . '.BankAccountBIC', 'BIC / SWIFT'),
                 )
         );
-
         $this->extend('updateFieldLabels', $fieldLabels);
         return $fieldLabels;
     }
@@ -137,25 +122,25 @@ class Prepayment extends PaymentMethod {
      *
      * @return FieldList
      */
-    public function getCMSFields($params = null) {
-        $fields = parent::getCMSFieldsForModules($params);
+    public function getCMSFields() : FieldList
+    {
+        $fields = parent::getCMSFieldsForModules();
         $fields->removeByName('InvoiceInfo');
         $fields->removeByName('TextBankAccountInfo');
         $fields->removeByName('BankAccountData');
-        
         $tabTextTemplates = Tab::create($this->fieldLabel('TextTemplates'));
         $fields->fieldByName('Root')->push($tabTextTemplates);
-        
         $languageFields = TranslationTools::prepare_cms_fields($this->getTranslationClassName());
         switch ($this->PaymentChannel) {
             case 'invoice':
                 $tabTextTemplates->setChildren(FieldList::create($languageFields->fieldByName('InvoiceInfo')));
                 break;
             case 'prepayment':
-            default:
                 $tabTextTemplates->setChildren(FieldList::create($languageFields->fieldByName('TextBankAccountInfo')));
+                break;
+            default:
+                break;
         }
-        
         $translations = GridField::create(
                 'PrepaymentTranslations',
                 $this->fieldLabel('PrepaymentTranslations'),
@@ -163,26 +148,21 @@ class Prepayment extends PaymentMethod {
                 GridFieldConfig_ExclusiveRelationEditor::create()
         );
         $fields->addFieldToTab('Root.Translations', $translations);
-        
         $this->addBankAccountCMSFields($fields);
-
         return $fields;
     }
     /**
      * creates default objects
      * 
      * @return void
-     *
-     * @author Sebastian Diel <sdiel@pixeltricks.de>
-     * @since 22.08.2017
      */
-    public function requireDefaultRecords() {
+    public function requireDefaultRecords() : void
+    {
         parent::requireDefaultRecords();
-        
         $infoMail = ShopEmail::get()->filter('TemplateName', 'PaymentPrepaymentBankAccountInfo')->first();
-        
-        if (is_null($infoMail) ||
-            !$infoMail->exists()) {
+        if (is_null($infoMail)
+         || !$infoMail->exists()
+        ) {
             $infoMail = ShopEmail::create();
             $infoMail->TemplateName = 'PaymentPrepaymentBankAccountInfo';
             $infoMail->Subject      = $this->fieldLabel('InfoMailSubject');
@@ -194,37 +174,35 @@ class Prepayment extends PaymentMethod {
      * Searchable fields
      *
      * @return array
-     *
-     * @author Roland Lehmann <rlehmann@pixeltricks.de>
-     * @since 5.7.2011
      */
-    public function searchableFields() {
-        $searchableFields = array(
-            "PrepaymentTranslations.Name" => array(
+    public function searchableFields() : array
+    {
+        $searchableFields = [
+            "PrepaymentTranslations.Name" => [
                 'title'  => $this->fieldLabel('Title'),
                 'filter' => PartialMatchFilter::class,
-            ),
-            'isActive' => array(
+            ],
+            'isActive' => [
                 'title'  => $this->fieldLabel('isActive'),
                 'filter' => ExactMatchFilter::class,
-            ),
-            'minAmountForActivation' => array(
+            ],
+            'minAmountForActivation' => [
                 'title'  => $this->fieldLabel('MinAmountForActivation'),
                 'filter' => GreaterThanFilter::class,
-            ),
-            'maxAmountForActivation' => array(
+            ],
+            'maxAmountForActivation' => [
                 'title'  => $this->fieldLabel('MaxAmountForActivation'),
                 'filter' => LessThanFilter::class,
-            ),
-            'Zone.ID' => array(
+            ],
+            'Zone.ID' => [
                 'title'  => $this->fieldLabel('AttributedZones'),
                 'filter' => ExactMatchFilter::class,
-            ),
-            'Countries.ID' => array(
+            ],
+            'Countries.ID' => [
                 'title'  => $this->fieldLabel('AttributedCountries'),
                 'filter' => ExactMatchFilter::class,
-            )
-        );
+            ]
+        ];
         $this->extend('updateSearchableFields', $searchableFields);
         return $searchableFields;
     }
@@ -233,11 +211,9 @@ class Prepayment extends PaymentMethod {
      * Called on before write.
      * 
      * @return void
-     *
-     * @author Sebastian Diel <sdiel@pixeltricks.de>
-     * @since 18.04.2018
      */
-    public function onBeforeWrite() {
+    public function onBeforeWrite() : void
+    {
         parent::onBeforeWrite();
         $this->writeBankAccounts();
     }
@@ -255,7 +231,8 @@ class Prepayment extends PaymentMethod {
      *
      * @return string 
      */
-    public function getTextBankAccountInfo() {
+    public function getTextBankAccountInfo()
+    {
         return $this->getTranslationFieldValue('TextBankAccountInfo');
     }
     
@@ -264,7 +241,8 @@ class Prepayment extends PaymentMethod {
      *
      * @return string 
      */
-    public function getInvoiceInfo() {
+    public function getInvoiceInfo()
+    {
         return $this->getTranslationFieldValue('InvoiceInfo');
     }
 
@@ -281,7 +259,8 @@ class Prepayment extends PaymentMethod {
      * 
      * @return ArrayList
      */
-    public function getBankAccounts() {
+    public function getBankAccounts() : ArrayList
+    {
         if ($this->PaymentChannel != 'prepayment') {
             return ArrayList::create();
         }
@@ -317,7 +296,8 @@ class Prepayment extends PaymentMethod {
      * @author Sebastian Diel <sdiel@pixeltricks.de>
      * @since 18.04.2018
      */
-    protected function addBankAccountCMSFields(FieldList $fields) {
+    protected function addBankAccountCMSFields(FieldList $fields) : void
+    {
         if ($this->PaymentChannel != 'prepayment') {
             return;
         }
@@ -330,12 +310,12 @@ class Prepayment extends PaymentMethod {
         $bankAccounts->add(new ArrayData(['ID' => $highestID+1, 'Name' => '', 'IBAN' => '', 'BIC' => '']));
         $index = 1;
         foreach ($bankAccounts as $bankAccount) {
-            $bankAccountGroup = new FieldGroup('BankAccountGroup' . $bankAccount->ID, '', $fields);
-            $bankAccountGroup->push(new \SilverStripe\Forms\ReadonlyField('BankAccuntLabel' . $bankAccount->ID, $this->fieldLabel('BankAccount') . ' ' . $index, '  '));
-            $bankAccountGroup->push(new TextField('BankAccounts[' . $bankAccount->ID . '][Owner]', $this->fieldLabel('BankAccountOwner'), $bankAccount->Owner));
-            $bankAccountGroup->push(new TextField('BankAccounts[' . $bankAccount->ID . '][Name]',  $this->fieldLabel('BankAccountName'),  $bankAccount->Name));
-            $bankAccountGroup->push(new TextField('BankAccounts[' . $bankAccount->ID . '][IBAN]',  $this->fieldLabel('BankAccountIBAN'),  $bankAccount->IBAN));
-            $bankAccountGroup->push(new TextField('BankAccounts[' . $bankAccount->ID . '][BIC]',   $this->fieldLabel('BankAccountBIC'),   $bankAccount->BIC));
+            $bankAccountGroup = FieldGroup::create('BankAccountGroup' . $bankAccount->ID, '', $fields);
+            $bankAccountGroup->push(ReadonlyField::create('BankAccuntLabel' . $bankAccount->ID, "{$this->fieldLabel('BankAccount')} {$index}", '  '));
+            $bankAccountGroup->push(TextField::create('BankAccounts[' . $bankAccount->ID . '][Owner]', $this->fieldLabel('BankAccountOwner'), $bankAccount->Owner));
+            $bankAccountGroup->push(TextField::create('BankAccounts[' . $bankAccount->ID . '][Name]',  $this->fieldLabel('BankAccountName'),  $bankAccount->Name));
+            $bankAccountGroup->push(TextField::create('BankAccounts[' . $bankAccount->ID . '][IBAN]',  $this->fieldLabel('BankAccountIBAN'),  $bankAccount->IBAN));
+            $bankAccountGroup->push(TextField::create('BankAccounts[' . $bankAccount->ID . '][BIC]',   $this->fieldLabel('BankAccountBIC'),   $bankAccount->BIC));
             $fields->addFieldToTab('Root.BankAccounts', $bankAccountGroup);
             $index++;
         }
@@ -349,7 +329,8 @@ class Prepayment extends PaymentMethod {
      * @author Sebastian Diel <sdiel@pixeltricks.de>
      * @since 18.04.2018
      */
-    protected function writeBankAccounts() {
+    protected function writeBankAccounts() : void
+    {
         if ($this->PaymentChannel != 'prepayment') {
             return;
         }
@@ -358,10 +339,11 @@ class Prepayment extends PaymentMethod {
         $bankAccountData = [];
         if (is_array($bankAccounts)) {
             foreach ($bankAccounts as $ID => $data) {
-                if (empty($data['Owner']) &&
-                    empty($data['Name']) &&
-                    empty($data['IBAN']) &&
-                    empty($data['BIC'])) {
+                if (empty($data['Owner'])
+                 && empty($data['Name'])
+                 && empty($data['IBAN'])
+                 && empty($data['BIC'])
+                ) {
                     continue;
                 }
                 $bankAccountData[$ID] = [
@@ -402,12 +384,13 @@ class Prepayment extends PaymentMethod {
      * 
      * @param array $checkoutData Checkout data
      * 
-     * @return void
+     * @return bool
      *
      * @author Sebastian Diel <sdiel@pixeltricks.de>
      * @since 24.04.2018
      */
-    public function canProcessAfterOrder(Order $order, array $checkoutData) {
+    public function canProcessAfterOrder(Order $order, array $checkoutData) : bool
+    {
         return true;
     }
     
@@ -417,12 +400,13 @@ class Prepayment extends PaymentMethod {
      * 
      * @param array $checkoutData Checkout data
      * 
-     * @return void
+     * @return bool
      *
      * @author Sebastian Diel <sdiel@pixeltricks.de>
      * @since 24.04.2018
      */
-    public function canPlaceOrder(array $checkoutData) {
+    public function canPlaceOrder(array $checkoutData) : bool
+    {
         return true;
     }
     
@@ -439,17 +423,19 @@ class Prepayment extends PaymentMethod {
      * @author Sebastian Diel <sdiel@pixeltricks.de>
      * @since 13.04.2018
      */
-    public function processAfterOrder(Order $order, array $checkoutData) {
-        if ($this->PaymentChannel == 'prepayment' &&
-            (!empty($this->TextBankAccountInfo)) ||
-             $this->getBankAccounts()->exists()) {
+    public function processAfterOrder(Order $order, array $checkoutData) : void
+    {
+        if ($this->PaymentChannel == 'prepayment'
+         && !empty($this->TextBankAccountInfo)
+         || $this->getBankAccounts()->exists()
+        ) {
             // send email with payment information to the customer
             ShopEmail::send(
                 'PaymentPrepaymentBankAccountInfo',
                 $order->CustomersEmail,
-                array(
+                [
                     'Order' => $order,
-                )
+                ]
             );
         }
     }
@@ -468,19 +454,19 @@ class Prepayment extends PaymentMethod {
      * @author Sebastian Diel <sdiel@pixeltricks.de>
      * @since 13.04.2018
      */
-    public function processConfirmationText(Order $order, array $checkoutData) {
+    public function processConfirmationText(Order $order, array $checkoutData) : string
+    {
         switch ($this->PaymentChannel) {
             case 'invoice':
-                $textTemplate = new SSViewer_FromString($this->InvoiceInfo);
+                $textTemplate = SSViewer_FromString::create($this->InvoiceInfo);
                 break;
             case 'prepayment':
+                $textTemplate = SSViewer_FromString::create($this->TextBankAccountInfo);
+                break;
             default:
-                $textTemplate = new SSViewer_FromString($this->TextBankAccountInfo);
+                break;
         }
-        
-        $text = HTTP::absoluteURLs($textTemplate->process(new ArrayData(['Order' => $order])));
-        
-        return $text;
+        $text = HTTP::absoluteURLs($textTemplate->process(ArrayData::create(['Order' => $order])));
+        return (string) $text;
     }
-    
 }
