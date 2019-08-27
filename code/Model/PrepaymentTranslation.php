@@ -5,6 +5,7 @@ namespace SilverCart\Prepayment\Model;
 use SilverCart\Dev\Tools;
 use SilverCart\Model\Payment\PaymentMethodTranslation;
 use SilverCart\Prepayment\Model\Prepayment;
+use SilverStripe\Forms\FieldList;
 
 /**
  * Translations for the multilingual attributes of Prepayment.
@@ -16,28 +17,32 @@ use SilverCart\Prepayment\Model\Prepayment;
  * @copyright 2017 pixeltricks GmbH
  * @since 22.08.2017
  * @license see license file in modules root directory
+ * 
+ * @property string $TextBankAccountInfo Text Bank Account Info
+ * @property string $InvoiceInfo         Invoice Info
+ * 
+ * @method Prepayment Prepayment() Returns the related Prepayment.
  */
-class PrepaymentTranslation extends PaymentMethodTranslation {
-    
+class PrepaymentTranslation extends PaymentMethodTranslation
+{
+    use \SilverCart\ORM\ExtensibleDataObject;
     /**
      * DB attributes.
      *
      * @var array
      */
-    private static $db = array(
-        'TextBankAccountInfo'   => 'Text',
-        'InvoiceInfo'           => 'Text'
-    );
-    
+    private static $db = [
+        'TextBankAccountInfo' => 'Text',
+        'InvoiceInfo'         => 'Text'
+    ];
     /**
      * 1:1 or 1:n relationships.
      *
      * @var array
      */
-    private static $has_one = array(
+    private static $has_one = [
         'Prepayment' => Prepayment::class,
-    );
-
+    ];
     /**
      * DB table name
      *
@@ -50,25 +55,20 @@ class PrepaymentTranslation extends PaymentMethodTranslation {
      * the class name will be returned.
      * 
      * @return string
-     *
-     * @author Sebastian Diel <sdiel@pixeltricks.de>
-     * @since 22.08.2017
      */
-    public function singular_name() {
+    public function singular_name() : string
+    {
         return Tools::singular_name_for($this);
     }
-
 
     /**
      * Returns the translated plural name of the object. If no translation exists
      * the class name will be returned.
      * 
      * @return string
-     *
-     * @author Sebastian Diel <sdiel@pixeltricks.de>
-     * @since 22.08.2017
      */
-    public function plural_name() {
+    public function plural_name() : string
+    {
         return Tools::plural_name_for($this);
     }
     
@@ -78,41 +78,29 @@ class PrepaymentTranslation extends PaymentMethodTranslation {
      * @param boolean $includerelations A boolean value to indicate if the labels returned include relation fields
      *
      * @return array
-     *
-     * @author Roland Lehmann <rlehmann@pixeltricks.de>
-     * @since 28.01.2012
      */
-    public function fieldLabels($includerelations = true) {
-        $fieldLabels = array_merge(
-                parent::fieldLabels($includerelations),
-                array(
-                    'TextBankAccountInfo' => _t(self::class . '.TextBankAccountInfo', 'Informations for payment method prepayment (bank account)'),
-                    'InvoiceInfo'         => _t(self::class . '.InvoiceInfo', 'Informations for payment method invoice'),
-                )
-        );
-        $this->extend('updateFieldLabels', $fieldLabels);
-        return $fieldLabels;
+    public function fieldLabels($includerelations = true) : array
+    {
+        return $this->defaultFieldLabels($includerelations, []);
     }
     
     /**
      * CMS fields for this object
-     *
-     * @param array $params Params
      * 
      * @return FieldList
      */
-    public function getCMSFields($params = null) {
-        $fields = parent::getCMSFields($params);
-        
-        switch ($this->Prepayment()->PaymentChannel) {
-            case 'invoice':
-                $fields->removeByName('TextBankAccountInfo');
-                break;
-            case 'prepayment':
-            default:
-                $fields->removeByName('InvoiceInfo');
-        }
-        
-        return $fields;
+    public function getCMSFields() : FieldList
+    {
+        $this->beforeUpdateCMSFields(function(FieldList $fields) {
+            switch ($this->Prepayment()->PaymentChannel) {
+                case 'invoice':
+                    $fields->removeByName('TextBankAccountInfo');
+                    break;
+                case 'prepayment':
+                default:
+                    $fields->removeByName('InvoiceInfo');
+            }
+        });
+        return parent::getCMSFields();
     }
 }
