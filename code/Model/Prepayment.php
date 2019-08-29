@@ -33,6 +33,11 @@ use SilverStripe\View\SSViewer_FromString;
  * @copyright 2017 pixeltricks GmbH
  * @since 22.08.2017
  * @license see license file in modules root directory
+ * 
+ * @property string $PaymentChannel  Payment channel
+ * @property string $BankAccountData Bank account data
+ * 
+ * @method \SilverStripe\ORM\HasManyList PrepaymentTranslations() Returns the related PrepaymentTranslations.
  */
 class Prepayment extends PaymentMethod
 {
@@ -96,7 +101,7 @@ class Prepayment extends PaymentMethod
     {
         $fieldLabels = array_merge(
                 parent::fieldLabels($includerelations),
-                array(
+                [
                     'TextBankAccountInfo'    => PrepaymentTranslation::singleton()->fieldLabel('TextBankAccountInfo'),
                     'InvoiceInfo'            => PrepaymentTranslation::singleton()->fieldLabel('InvoiceInfo'),
                     'PrepaymentTranslations' => PrepaymentTranslation::singleton()->plural_name(),
@@ -109,7 +114,7 @@ class Prepayment extends PaymentMethod
                     'BankAccountName'        => _t(self::class . '.BankAccountName', 'Bank'),
                     'BankAccountIBAN'        => _t(self::class . '.BankAccountIBAN', 'IBAN'),
                     'BankAccountBIC'         => _t(self::class . '.BankAccountBIC', 'BIC / SWIFT'),
-                )
+                ]
         );
         $this->extend('updateFieldLabels', $fieldLabels);
         return $fieldLabels;
@@ -124,32 +129,33 @@ class Prepayment extends PaymentMethod
      */
     public function getCMSFields() : FieldList
     {
-        $fields = parent::getCMSFieldsForModules();
-        $fields->removeByName('InvoiceInfo');
-        $fields->removeByName('TextBankAccountInfo');
-        $fields->removeByName('BankAccountData');
-        $tabTextTemplates = Tab::create($this->fieldLabel('TextTemplates'));
-        $fields->fieldByName('Root')->push($tabTextTemplates);
-        $languageFields = TranslationTools::prepare_cms_fields($this->getTranslationClassName());
-        switch ($this->PaymentChannel) {
-            case 'invoice':
-                $tabTextTemplates->setChildren(FieldList::create($languageFields->fieldByName('InvoiceInfo')));
-                break;
-            case 'prepayment':
-                $tabTextTemplates->setChildren(FieldList::create($languageFields->fieldByName('TextBankAccountInfo')));
-                break;
-            default:
-                break;
-        }
-        $translations = GridField::create(
-                'PrepaymentTranslations',
-                $this->fieldLabel('PrepaymentTranslations'),
-                $this->PrepaymentTranslations(),
-                GridFieldConfig_ExclusiveRelationEditor::create()
-        );
-        $fields->addFieldToTab('Root.Translations', $translations);
-        $this->addBankAccountCMSFields($fields);
-        return $fields;
+        $this->beforeUpdateCMSFields(function(FieldList $fields) {
+            $fields->removeByName('InvoiceInfo');
+            $fields->removeByName('TextBankAccountInfo');
+            $fields->removeByName('BankAccountData');
+            $tabTextTemplates = Tab::create($this->fieldLabel('TextTemplates'));
+            $fields->fieldByName('Root')->push($tabTextTemplates);
+            $languageFields = TranslationTools::prepare_cms_fields($this->getTranslationClassName());
+            switch ($this->PaymentChannel) {
+                case 'invoice':
+                    $tabTextTemplates->setChildren(FieldList::create($languageFields->fieldByName('InvoiceInfo')));
+                    break;
+                case 'prepayment':
+                    $tabTextTemplates->setChildren(FieldList::create($languageFields->fieldByName('TextBankAccountInfo')));
+                    break;
+                default:
+                    break;
+            }
+            $translations = GridField::create(
+                    'PrepaymentTranslations',
+                    $this->fieldLabel('PrepaymentTranslations'),
+                    $this->PrepaymentTranslations(),
+                    GridFieldConfig_ExclusiveRelationEditor::create()
+            );
+            $fields->addFieldToTab('Root.Translations', $translations);
+            $this->addBankAccountCMSFields($fields);
+        });
+        return parent::getCMSFieldsForModules();
     }
     /**
      * creates default objects
@@ -268,10 +274,11 @@ class Prepayment extends PaymentMethod
         $bankAccountData = unserialize($this->BankAccountData);
         if (is_array($bankAccountData)) {
             foreach ($bankAccountData as $ID => $data) {
-                if (empty($data['Owner']) &&
-                    empty($data['Name']) &&
-                    empty($data['IBAN']) &&
-                    empty($data['BIC'])) {
+                if (empty($data['Owner'])
+                 && empty($data['Name'])
+                 && empty($data['IBAN'])
+                 && empty($data['BIC'])
+                ) {
                     continue;
                 }
                 $bankAccounts->add(ArrayData::create([
@@ -307,7 +314,7 @@ class Prepayment extends PaymentMethod
         if ($bankAccounts->exists()) {
             $highestID = $bankAccounts->sort('ID', 'DESC')->first()->ID;
         }
-        $bankAccounts->add(new ArrayData(['ID' => $highestID+1, 'Name' => '', 'IBAN' => '', 'BIC' => '']));
+        $bankAccounts->add(ArrayData::create(['ID' => $highestID+1, 'Name' => '', 'IBAN' => '', 'BIC' => '']));
         $index = 1;
         foreach ($bankAccounts as $bankAccount) {
             $bankAccountGroup = FieldGroup::create('BankAccountGroup' . $bankAccount->ID, '', $fields);
@@ -456,6 +463,8 @@ class Prepayment extends PaymentMethod
      */
     public function processConfirmationText(Order $order, array $checkoutData) : string
     {
+        $text         = '';
+        $textTemplate = null;
         switch ($this->PaymentChannel) {
             case 'invoice':
                 $textTemplate = SSViewer_FromString::create($this->InvoiceInfo);
@@ -466,7 +475,9 @@ class Prepayment extends PaymentMethod
             default:
                 break;
         }
-        $text = HTTP::absoluteURLs($textTemplate->process(ArrayData::create(['Order' => $order])));
+        if (!is_null($textTemplate)) {
+            $text = HTTP::absoluteURLs($textTemplate->process(ArrayData::create(['Order' => $order])));
+        }
         return (string) $text;
     }
 }
