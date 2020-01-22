@@ -3,7 +3,7 @@ it:
         PleaseTransferAmount: 'Si prega di trasferire l''importo totale di <strong>{amountTotal}</strong> sul seguente conto bancario:'
         PleaseTransferAmountPlural: 'Trasferisci l''importo totale di <strong>{amountTotal}</strong> a uno dei seguenti conti bancari:'
         TemplateName_PaymentPrepaymentBankAccountInfo: 'Informazioni sul metodo di pagamento anticipato (cliente)'
-        ThankYouForYourOrder: 'Grazie per il tuo ordine presso il nostro negozio.'
+        ThankYouForYourOrder: 'Grazie per il tuo ordine sul nostro portale acquisti.'
     SilverCart\Prepayment\Model\Prepayment:
         BankAccount: 'Conto bancario'
         BankAccounts: 'Conti bancari'
