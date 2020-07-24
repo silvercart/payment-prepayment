@@ -1,0 +1,23 @@
+fr_BE:
+    SilverCart\Model\ShopEmail:
+        PleaseTransferAmount: 'Veuillez transférer le montant total de <strong> {amountTotal} </strong> sur le compte suivant:'
+        PleaseTransferAmountPlural: 'Veuillez transférer le montant total de <strong> {amountTotal} </strong> sur l''un des comptes suivants:'
+        TemplateName_PaymentPrepaymentBankAccountInfo: 'Informations sur le paiement pour le paiement à l''avance (client)'
+        ThankYouForYourOrder: 'Nous vous remercions de votre commande dans notre boutique.'
+    SilverCart\Prepayment\Model\Prepayment:
+        BankAccount: 'Compte bancaire'
+        BankAccounts: 'Comptes bancaires'
+        BankAccountOwner: 'Titulaire du compte'
+        BankAccountName: 'Institution bancaire'
+        BankAccountIBAN: IBAN
+        BankAccountBIC: 'BIC / SWIFT'
+        NAME: 'Paiement à l''avance'
+        PAYMENT_CHANNEL: 'Mode de paiement'
+        PAYMENT_CHANNEL_INVOICE: Facture
+        PAYMENT_CHANNEL_PREPAYMENT: 'Paiement à l''avance'
+        InfoMailSubject: 'Informations de paiement pour votre commande'
+        TextTemplates: 'Modèles de texte'
+        TITLE: 'Paiement à l''avance'
+    SilverCart\Prepayment\Model\PrepaymentTranslation:
+        InvoiceInfo: 'Informations sur le mode de paiement de la facture'
+        TextBankAccountInfo: 'Informations sur le mode de paiement à l''avance (coordonnées bancaires)'
