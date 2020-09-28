@@ -438,11 +438,11 @@ class Prepayment extends PaymentMethod
         ) {
             // send email with payment information to the customer
             ShopEmail::send(
-                'PaymentPrepaymentBankAccountInfo',
-                $order->CustomersEmail,
-                [
-                    'Order' => $order,
-                ]
+                    'PaymentPrepaymentBankAccountInfo',
+                    $order->CustomersEmail,
+                    ['Order' => $order],
+                    [],
+                    $order->Member()->Locale
             );
         }
     }
