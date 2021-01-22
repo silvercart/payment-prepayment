@@ -1,18 +1,22 @@
 nl:
     SilverCart\Model\ShopEmail:
-        PleaseTransferAmount: 'Please transfer the total amount of <strong>{amountTotal}</strong> to the following bank account:'
-        PleaseTransferAmountPlural: 'Please transfer the total amount of <strong>{amountTotal}</strong> to one of the following bank accounts:'
+        PleaseTransferAmount: 'Maak het totaalbedrag <strong>{amountTotal}</strong> over op de volgende bankrekening:'
+        PleaseTransferAmountPlural: 'Maak het totaalbedrag <strong>{amountTotal}</strong> over op een van de volgende bankrekeningen:'
         TemplateName_PaymentPrepaymentBankAccountInfo: 'Informations for payment method prepayment (customer)'
-        ThankYouForYourOrder: 'Thank you for your order at our shop.'
+        ThankYouForYourOrder: 'Bedankt voor uw bestelling in onze winkel.'
     SilverCart\Prepayment\Model\Prepayment:
         BankAccount: 'Bank account'
         BankAccounts: 'Bank accounts'
+        BankAccountOwner: Accounthouder
+        BankAccountName: Bankinstelling
+        BankAccountIBAN: IBAN
+        BankAccountBIC: 'BIC / SWIFT'
         NAME: Vooruitbetaling
         PAYMENT_CHANNEL: 'Betaling Channel'
         PAYMENT_CHANNEL_INVOICE: Factuur
         PAYMENT_CHANNEL_PREPAYMENT: Vooruitbetaling
-        InfoMailSubject: 'betaling informatie met betrekking tot uw bestelling'
-        TextTemplates: 'text templates'
+        InfoMailSubject: 'Betalingsinformatie met betrekking tot uw bestelling'
+        TextTemplates: tekstsjablonen
         TITLE: Vooruitbetaling
     SilverCart\Prepayment\Model\PrepaymentTranslation:
         InvoiceInfo: 'Informations for payment method invoice'
