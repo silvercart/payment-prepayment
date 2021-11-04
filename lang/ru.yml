@@ -1,19 +1,19 @@
 ru:
-    SilverCart\Model\ShopEmail:
-        PleaseTransferAmount: 'Please transfer the total amount of <strong>{amountTotal}</strong> to the following bank account:'
-        PleaseTransferAmountPlural: 'Please transfer the total amount of <strong>{amountTotal}</strong> to one of the following bank accounts:'
-        TemplateName_PaymentPrepaymentBankAccountInfo: 'информация способе предоплаты'
-        ThankYouForYourOrder: 'Thank you for your order at our shop.'
-    SilverCart\Prepayment\Model\Prepayment:
-        BankAccount: 'Bank account'
-        BankAccounts: 'Bank accounts'
-        NAME: Предоплата
-        PAYMENT_CHANNEL: 'Способ оплаты'
-        PAYMENT_CHANNEL_INVOICE: 'Счет – фактура'
-        PAYMENT_CHANNEL_PREPAYMENT: Предоплата
-        InfoMailSubject: 'информация по оплате Вашего заказа'
-        TextTemplates: 'Текстовые макеты'
-        TITLE: Предоплата
-    SilverCart\Prepayment\Model\PrepaymentTranslation:
-        InvoiceInfo: 'информация о платеже счётом'
-        TextBankAccountInfo: 'информация способе предоплаты'
+  SilverCart\Model\ShopEmail:
+    PleaseTransferAmount: 'Please transfer the total amount of <strong>{amountTotal}</strong> to the following bank account:'
+    PleaseTransferAmountPlural: 'Please transfer the total amount of <strong>{amountTotal}</strong> to one of the following bank accounts:'
+    TemplateName_PaymentPrepaymentBankAccountInfo: 'информация способе предоплаты'
+    ThankYouForYourOrder: 'Thank you for your order at our shop.'
+  SilverCart\Prepayment\Model\Prepayment:
+    BankAccount: 'Bank account'
+    BankAccounts: 'Bank accounts'
+    InfoMailSubject: 'информация по оплате Вашего заказа'
+    NAME: Предоплата
+    PAYMENT_CHANNEL: 'Способ оплаты'
+    PAYMENT_CHANNEL_INVOICE: 'Счет – фактура'
+    PAYMENT_CHANNEL_PREPAYMENT: Предоплата
+    TITLE: Предоплата
+    TextTemplates: 'Текстовые макеты'
+  SilverCart\Prepayment\Model\PrepaymentTranslation:
+    InvoiceInfo: 'информация о платеже счётом'
+    TextBankAccountInfo: 'информация способе предоплаты'
