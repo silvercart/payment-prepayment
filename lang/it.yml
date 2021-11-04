@@ -1,23 +1,23 @@
 it:
-    SilverCart\Model\ShopEmail:
-        PleaseTransferAmount: 'Si prega di trasferire l''importo totale di <strong>{amountTotal}</strong> sul seguente conto bancario:'
-        PleaseTransferAmountPlural: 'Trasferisci l''importo totale di <strong>{amountTotal}</strong> a uno dei seguenti conti bancari:'
-        TemplateName_PaymentPrepaymentBankAccountInfo: 'Informazioni sul metodo di pagamento anticipato (cliente)'
-        ThankYouForYourOrder: 'Grazie per il tuo ordine sul nostro Portale Acquisti.'
-    SilverCart\Prepayment\Model\Prepayment:
-        BankAccount: 'Conto bancario'
-        BankAccounts: 'Conti bancari'
-        BankAccountOwner: 'Titolare del conto'
-        BankAccountName: Banca
-        BankAccountIBAN: IBAN
-        BankAccountBIC: 'BIC / SWIFT'
-        NAME: 'Pagamento anticipato'
-        PAYMENT_CHANNEL: 'Modalità di pagamento'
-        PAYMENT_CHANNEL_INVOICE: Fattura
-        PAYMENT_CHANNEL_PREPAYMENT: 'Pagamento anticipato'
-        InfoMailSubject: 'Informazioni per il pagamento del tuo ordine'
-        TextTemplates: 'Modelli di testo'
-        TITLE: 'Pagamento anticipato'
-    SilverCart\Prepayment\Model\PrepaymentTranslation:
-        InvoiceInfo: 'Per informazioni sulla modalità di pagamento della Fattura'
-        TextBankAccountInfo: 'Informazioni sul metodo di pagamento anticipato (coordinate bancarie)'
+  SilverCart\Model\ShopEmail:
+    PleaseTransferAmount: 'Si prega di trasferire l''importo totale di <strong>{amountTotal}</strong> sul seguente conto bancario:'
+    PleaseTransferAmountPlural: 'Trasferisci l''importo totale di <strong>{amountTotal}</strong> a uno dei seguenti conti bancari:'
+    TemplateName_PaymentPrepaymentBankAccountInfo: 'Informazioni sul metodo di pagamento anticipato (cliente)'
+    ThankYouForYourOrder: 'Grazie per il tuo ordine sul nostro Portale Acquisti.'
+  SilverCart\Prepayment\Model\Prepayment:
+    BankAccount: 'Conto bancario'
+    BankAccountBIC: 'BIC / SWIFT'
+    BankAccountIBAN: IBAN
+    BankAccountName: Banca
+    BankAccountOwner: 'Titolare del conto'
+    BankAccounts: 'Conti bancari'
+    InfoMailSubject: 'Informazioni per il pagamento del tuo ordine'
+    NAME: 'Pagamento anticipato'
+    PAYMENT_CHANNEL: 'Modalità di pagamento'
+    PAYMENT_CHANNEL_INVOICE: Fattura
+    PAYMENT_CHANNEL_PREPAYMENT: 'Pagamento anticipato'
+    TITLE: 'Pagamento anticipato'
+    TextTemplates: 'Modelli di testo'
+  SilverCart\Prepayment\Model\PrepaymentTranslation:
+    InvoiceInfo: 'Per informazioni sulla modalità di pagamento della Fattura'
+    TextBankAccountInfo: 'Informazioni sul metodo di pagamento anticipato (coordinate bancarie)'

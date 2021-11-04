@@ -1,23 +1,23 @@
 da_DK:
-    SilverCart\Model\ShopEmail:
-        PleaseTransferAmount: 'Overfør venligst det samlede beløb på <strong>{samlet beløb}</strong> til følgende konto:'
-        PleaseTransferAmountPlural: 'Overfør venligst det samlede beløb på <strong>{samlet beløb}</strong> til en af følgende konti:'
-        TemplateName_PaymentPrepaymentBankAccountInfo: 'Betalingsoplysninger for forudbetaling (kunde)'
-        ThankYouForYourOrder: 'Tak for din bestilling i vores butik.'
-    SilverCart\Prepayment\Model\Prepayment:
-        BankAccount: Bankkonto
-        BankAccounts: Bankkonti
-        BankAccountOwner: Kontohaver
-        BankAccountName: Bank
-        BankAccountIBAN: IBAN
-        BankAccountBIC: 'BIC / SWIFT'
-        NAME: Forudbetaling
-        PAYMENT_CHANNEL: Betalingsmetode
-        PAYMENT_CHANNEL_INVOICE: Faktura
-        PAYMENT_CHANNEL_PREPAYMENT: Forudbetaling
-        InfoMailSubject: 'Betalingsoplysninger for din ordre'
-        TextTemplates: Tekstskabeloner
-        TITLE: Forudbetaling
-    SilverCart\Prepayment\Model\PrepaymentTranslation:
-        InvoiceInfo: 'Oplysninger om betalingsmetoden faktura'
-        TextBankAccountInfo: 'Oplysninger om betalingsmetode forudbetaling (bankkonto)'
+  SilverCart\Model\ShopEmail:
+    PleaseTransferAmount: 'Overfør venligst det samlede beløb på <strong>{samlet beløb}</strong> til følgende konto:'
+    PleaseTransferAmountPlural: 'Overfør venligst det samlede beløb på <strong>{samlet beløb}</strong> til en af følgende konti:'
+    TemplateName_PaymentPrepaymentBankAccountInfo: 'Betalingsoplysninger for forudbetaling (kunde)'
+    ThankYouForYourOrder: 'Tak for din bestilling i vores butik.'
+  SilverCart\Prepayment\Model\Prepayment:
+    BankAccount: Bankkonto
+    BankAccountBIC: 'BIC / SWIFT'
+    BankAccountIBAN: IBAN
+    BankAccountName: Bank
+    BankAccountOwner: Kontohaver
+    BankAccounts: Bankkonti
+    InfoMailSubject: 'Betalingsoplysninger for din ordre'
+    NAME: Forudbetaling
+    PAYMENT_CHANNEL: Betalingsmetode
+    PAYMENT_CHANNEL_INVOICE: Faktura
+    PAYMENT_CHANNEL_PREPAYMENT: Forudbetaling
+    TITLE: Forudbetaling
+    TextTemplates: Tekstskabeloner
+  SilverCart\Prepayment\Model\PrepaymentTranslation:
+    InvoiceInfo: 'Oplysninger om betalingsmetoden faktura'
+    TextBankAccountInfo: 'Oplysninger om betalingsmetode forudbetaling (bankkonto)'

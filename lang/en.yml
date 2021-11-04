@@ -1,23 +1,23 @@
 en:
-    SilverCart\Model\ShopEmail:
-        PleaseTransferAmount: 'Please transfer the total amount of <strong>{amountTotal}</strong> to the following bank account:'
-        PleaseTransferAmountPlural: 'Please transfer the total amount of <strong>{amountTotal}</strong> to one of the following bank accounts:'
-        TemplateName_PaymentPrepaymentBankAccountInfo: 'Informations for payment method prepayment (customer)'
-        ThankYouForYourOrder: 'Thank you for your order at our shop.'
-    SilverCart\Prepayment\Model\Prepayment:
-        BankAccount: 'Bank account'
-        BankAccounts: 'Bank accounts'
-        BankAccountOwner: 'Account Holder'
-        BankAccountName: Bank
-        BankAccountIBAN: IBAN
-        BankAccountBIC: 'BIC / SWIFT'
-        NAME: Prepayment
-        PAYMENT_CHANNEL: 'Payment Channel'
-        PAYMENT_CHANNEL_INVOICE: Invoice
-        PAYMENT_CHANNEL_PREPAYMENT: Prepayment
-        InfoMailSubject: 'payment information regarding your order'
-        TextTemplates: 'text templates'
-        TITLE: Prepayment
-    SilverCart\Prepayment\Model\PrepaymentTranslation:
-        InvoiceInfo: 'Information for payment method invoice'
-        TextBankAccountInfo: 'Information for payment method prepayment (bank account)'
+  SilverCart\Model\ShopEmail:
+    PleaseTransferAmount: 'Please transfer the total amount of <strong>{amountTotal}</strong> to the following bank account:'
+    PleaseTransferAmountPlural: 'Please transfer the total amount of <strong>{amountTotal}</strong> to one of the following bank accounts:'
+    TemplateName_PaymentPrepaymentBankAccountInfo: 'Informations for payment method prepayment (customer)'
+    ThankYouForYourOrder: 'Thank you for your order at our shop.'
+  SilverCart\Prepayment\Model\Prepayment:
+    BankAccount: 'Bank account'
+    BankAccountBIC: 'BIC / SWIFT'
+    BankAccountIBAN: IBAN
+    BankAccountName: Bank
+    BankAccountOwner: 'Account Holder'
+    BankAccounts: 'Bank accounts'
+    InfoMailSubject: 'payment information regarding your order'
+    NAME: Prepayment
+    PAYMENT_CHANNEL: 'Payment Channel'
+    PAYMENT_CHANNEL_INVOICE: Invoice
+    PAYMENT_CHANNEL_PREPAYMENT: Prepayment
+    TITLE: Prepayment
+    TextTemplates: 'text templates'
+  SilverCart\Prepayment\Model\PrepaymentTranslation:
+    InvoiceInfo: 'Information for payment method invoice'
+    TextBankAccountInfo: 'Information for payment method prepayment (bank account)'
