@@ -1,0 +1,23 @@
+tr_TR:
+  SilverCart\Model\ShopEmail:
+    PleaseTransferAmount: 'Lütfen toplam <strong> {amountTotal} </strong> tutarını aşağıdaki hesaba aktarın:'
+    PleaseTransferAmountPlural: 'Lütfen toplam <strong> {amountTotal} </strong> tutarını aşağıdaki hesaplardan birine aktarın:'
+    TemplateName_PaymentPrepaymentBankAccountInfo: 'Ön ödeme için ödeme bilgileri (müşteri)'
+    ThankYouForYourOrder: 'Mağazamızda siparişiniz için teşekkür ederiz.'
+  SilverCart\Prepayment\Model\Prepayment:
+    BankAccount: 'banka hesabı'
+    BankAccountBIC: 'BIC SWIFT'
+    BankAccountIBAN: IBAN
+    BankAccountName: 'bankacılık kurumu'
+    BankAccountOwner: 'hesap sahibi'
+    BankAccounts: 'banka hesabı'
+    InfoMailSubject: 'Siparişinizle ilgili ödeme bilgileri'
+    NAME: 'peşin ödeme'
+    PAYMENT_CHANNEL: 'Ödeme şekli'
+    PAYMENT_CHANNEL_INVOICE: fatura
+    PAYMENT_CHANNEL_PREPAYMENT: 'peşin ödeme'
+    TITLE: 'peşin ödeme'
+    TextTemplates: 'Metin şablonları'
+  SilverCart\Prepayment\Model\PrepaymentTranslation:
+    InvoiceInfo: 'Fatura ödeme yöntemi hakkında bilgi'
+    TextBankAccountInfo: 'Peşin ödeme yöntemi bilgisi (banka hesabı)'

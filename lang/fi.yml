@@ -1,0 +1,23 @@
+fi:
+  SilverCart\Model\ShopEmail:
+    PleaseTransferAmount: 'Siirtäkää <strong>{summaKokonaismäärä}</strong> seuraavalle tilille:'
+    PleaseTransferAmountPlural: 'Siirrä <strong>{summaKokonaismäärä}</strong> jollekin seuraavista tileistä:'
+    TemplateName_PaymentPrepaymentBankAccountInfo: 'Ennakkomaksun maksutiedot (asiakas)'
+    ThankYouForYourOrder: 'Kiitos tilauksestasi kaupassamme.'
+  SilverCart\Prepayment\Model\Prepayment:
+    BankAccount: Pankkitili
+    BankAccountBIC: 'BIC / SWIFT'
+    BankAccountIBAN: IBAN
+    BankAccountName: Pankkilaitos
+    BankAccountOwner: Tilinomistaja
+    BankAccounts: Pankkitilit
+    InfoMailSubject: 'Tilauksen maksutiedot'
+    NAME: Ennakkomaksu
+    PAYMENT_CHANNEL: Maksutapa
+    PAYMENT_CHANNEL_INVOICE: Lasku
+    PAYMENT_CHANNEL_PREPAYMENT: Ennakkomaksu
+    TITLE: Ennakkomaksu
+    TextTemplates: Tekstimallit
+  SilverCart\Prepayment\Model\PrepaymentTranslation:
+    InvoiceInfo: 'Laskun maksutapaa koskevat tiedot'
+    TextBankAccountInfo: 'Ennakkomaksua koskevat tiedot (pankkitiedot)'

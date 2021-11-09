@@ -6,6 +6,10 @@ ru:
     ThankYouForYourOrder: 'Thank you for your order at our shop.'
   SilverCart\Prepayment\Model\Prepayment:
     BankAccount: 'Bank account'
+    BankAccountBIC: 'БИК / SWIFT'
+    BankAccountIBAN: IBAN
+    BankAccountName: 'Банковское учреждение'
+    BankAccountOwner: 'Владелец счета'
     BankAccounts: 'Bank accounts'
     InfoMailSubject: 'информация по оплате Вашего заказа'
     NAME: Предоплата

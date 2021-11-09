@@ -1,0 +1,23 @@
+cs:
+  SilverCart\Model\ShopEmail:
+    PleaseTransferAmount: 'Převeďte, prosím, celkovou částku <strong>{celkem}</strong> na následující účet:'
+    PleaseTransferAmountPlural: 'Převeďte, prosím, celkovou částku <strong>{celkem}</strong> na jeden z následujících účtů:'
+    TemplateName_PaymentPrepaymentBankAccountInfo: 'Platební údaje pro platbu předem (zákazník)'
+    ThankYouForYourOrder: 'Děkujeme vám za vaši objednávku v našem obchodě.'
+  SilverCart\Prepayment\Model\Prepayment:
+    BankAccount: 'Bankovní účet'
+    BankAccountBIC: 'BIC / SWIFT'
+    BankAccountIBAN: IBAN
+    BankAccountName: 'Bankovní instituce'
+    BankAccountOwner: 'Držitel účtu'
+    BankAccounts: 'Bankovní účty'
+    InfoMailSubject: 'Platební údaje pro vaši objednávku'
+    NAME: Předplacení
+    PAYMENT_CHANNEL: 'Způsob platby'
+    PAYMENT_CHANNEL_INVOICE: Faktura
+    PAYMENT_CHANNEL_PREPAYMENT: Předplacení
+    TITLE: Předplacení
+    TextTemplates: 'Šablony textu'
+  SilverCart\Prepayment\Model\PrepaymentTranslation:
+    InvoiceInfo: 'Informace o způsobu úhrady faktury'
+    TextBankAccountInfo: 'Informace o platbě předem (bankovní spojení)'

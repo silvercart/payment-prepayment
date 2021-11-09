@@ -1,0 +1,23 @@
+sv:
+  SilverCart\Model\ShopEmail:
+    PleaseTransferAmount: 'Vänligen överför det totala beloppet <strong>{amountTotal}</strong> till följande konto:'
+    PleaseTransferAmountPlural: 'Vänligen överför det totala beloppet <strong>{amountTotal}</strong> till ett av följande konton:'
+    TemplateName_PaymentPrepaymentBankAccountInfo: 'Betalningsinformation för förskottsbetalning (kund)'
+    ThankYouForYourOrder: 'Tack för din beställning i vår butik.'
+  SilverCart\Prepayment\Model\Prepayment:
+    BankAccount: Bankkonto
+    BankAccountBIC: 'BIC / SWIFT'
+    BankAccountIBAN: IBAN
+    BankAccountName: Bankinstitut
+    BankAccountOwner: Kontoinnehavare
+    BankAccounts: Bankkonton
+    InfoMailSubject: 'Betalningsinformation för din beställning'
+    NAME: Förskottsbetalning
+    PAYMENT_CHANNEL: Betalningsmetod
+    PAYMENT_CHANNEL_INVOICE: Faktura
+    PAYMENT_CHANNEL_PREPAYMENT: Förskottsbetalning
+    TITLE: Förskottsbetalning
+    TextTemplates: 'Mallar för text'
+  SilverCart\Prepayment\Model\PrepaymentTranslation:
+    InvoiceInfo: 'Information om betalningssättet för fakturan'
+    TextBankAccountInfo: 'Information om förskottsbetalning (bankuppgifter)'

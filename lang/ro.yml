@@ -1,0 +1,23 @@
+ro:
+  SilverCart\Model\ShopEmail:
+    PleaseTransferAmount: 'Vă rugăm să transferați suma totală de <strong>{sumaTotal}</strong> în următorul cont:'
+    PleaseTransferAmountPlural: 'Vă rugăm să transferați suma totală de <strong>{sumaTotal}</strong> în unul dintre următoarele conturi:'
+    TemplateName_PaymentPrepaymentBankAccountInfo: 'Informații de plată pentru plata anticipată (client)'
+    ThankYouForYourOrder: 'Vă mulțumim pentru comanda dvs. în magazinul nostru.'
+  SilverCart\Prepayment\Model\Prepayment:
+    BankAccount: 'Cont bancar'
+    BankAccountBIC: 'BIC / SWIFT'
+    BankAccountIBAN: IBAN
+    BankAccountName: 'Instituție bancară'
+    BankAccountOwner: 'Titular de cont'
+    BankAccounts: 'Conturi bancare'
+    InfoMailSubject: 'Informații de plată pentru comanda dvs.'
+    NAME: 'Plată anticipată'
+    PAYMENT_CHANNEL: 'Metoda de plată'
+    PAYMENT_CHANNEL_INVOICE: Factura
+    PAYMENT_CHANNEL_PREPAYMENT: 'Plată anticipată'
+    TITLE: 'Plată anticipată'
+    TextTemplates: 'Șabloane de text'
+  SilverCart\Prepayment\Model\PrepaymentTranslation:
+    InvoiceInfo: 'Informații privind metoda de plată a facturii'
+    TextBankAccountInfo: 'Informații pentru plata în avans (date bancare)'

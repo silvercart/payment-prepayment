@@ -1,0 +1,23 @@
+pl:
+  SilverCart\Model\ShopEmail:
+    PleaseTransferAmount: 'Prosimy o przelanie kwoty <strong>{amountTotal}</strong> na poniższe konto:'
+    PleaseTransferAmountPlural: 'Prosimy o przelanie całkowitej kwoty <strong>{amountTotal}</strong> na jedno z poniższych kont:'
+    TemplateName_PaymentPrepaymentBankAccountInfo: 'Informacje o płatności dla przedpłaty (klient)'
+    ThankYouForYourOrder: 'Dziękujemy za zamówienie w naszym sklepie.'
+  SilverCart\Prepayment\Model\Prepayment:
+    BankAccount: 'Rachunek bankowy'
+    BankAccountBIC: 'BIC / SWIFT'
+    BankAccountIBAN: IBAN
+    BankAccountName: 'Instytucja bankowa'
+    BankAccountOwner: 'Posiadacz rachunku'
+    BankAccounts: 'Rachunki bankowe'
+    InfoMailSubject: 'Informacje dotyczące płatności za zamówienie'
+    NAME: Przedpłaty
+    PAYMENT_CHANNEL: 'Sposób płatności'
+    PAYMENT_CHANNEL_INVOICE: Faktura
+    PAYMENT_CHANNEL_PREPAYMENT: Przedpłaty
+    TITLE: Przedpłaty
+    TextTemplates: 'Szablony tekstowe'
+  SilverCart\Prepayment\Model\PrepaymentTranslation:
+    InvoiceInfo: 'Informacje o sposobie płatności za fakturę'
+    TextBankAccountInfo: 'Informacje dotyczące płatności z góry (dane bankowe)'

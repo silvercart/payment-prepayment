@@ -1,0 +1,23 @@
+nb_NO:
+  SilverCart\Model\ShopEmail:
+    PleaseTransferAmount: 'Overfør det totale beløpet på <strong> {amountTotal} </strong> til følgende konto:'
+    PleaseTransferAmountPlural: 'Overfør det totale beløpet på <strong> {amountTotal} </strong> til en av følgende kontoer:'
+    TemplateName_PaymentPrepaymentBankAccountInfo: 'Betalingsinformasjon for forhåndsbetaling (kunde)'
+    ThankYouForYourOrder: 'Takk for din bestilling i butikken vår.'
+  SilverCart\Prepayment\Model\Prepayment:
+    BankAccount: bankkonto
+    BankAccountBIC: 'BIC SWIFT'
+    BankAccountIBAN: IBAN
+    BankAccountName: Bankinstitusjon
+    BankAccountOwner: 'konto eier'
+    BankAccounts: bankkontoer
+    InfoMailSubject: 'Betalingsinformasjon om bestillingen din'
+    NAME: 'Betaling på forhånd'
+    PAYMENT_CHANNEL: Betalingsmetode
+    PAYMENT_CHANNEL_INVOICE: faktura
+    PAYMENT_CHANNEL_PREPAYMENT: 'Betaling på forhånd'
+    TITLE: 'Betaling på forhånd'
+    TextTemplates: Tekstmaler
+  SilverCart\Prepayment\Model\PrepaymentTranslation:
+    InvoiceInfo: 'Informasjon om betalingsmåte for faktura'
+    TextBankAccountInfo: 'Informasjon om betalingsmåte på forhånd (bankkonto)'
